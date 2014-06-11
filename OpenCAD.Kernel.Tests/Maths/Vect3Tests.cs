@@ -88,6 +88,30 @@ namespace OpenCAD.Kernel.Tests.Maths
             Assert.AreEqual(1.0, Vect3.UnitZ.Z, Delta);
         }
 
+
+        [TestMethod]
+        public void CrossProduct()
+        {
+            Assert.AreEqual(new Vect3(3.0, -3.0, 1.0).CrossProduct(new Vect3(4.0, 9.0, 2.0)), new Vect3(-15.0, -2.0, 39.0));
+            Assert.AreEqual(new Vect3(3.0, -3.0, 1.0).CrossProduct(new Vect3(4.0, 9.0, 2.0)), new Vect3(-15.0, -2.0, 39.0));
+        }
+
+        [TestMethod]
+        public void Equality()
+        {
+            var a = new Vect3(2.0, 3.0, 5.0);
+            var b = new Vect3(2.0, 3.0, 5.0);
+            var c = new Vect3(3.0, 3.0, 6.0);
+            var d = a;
+
+            Assert.IsTrue(a.Equals(b));
+            Assert.IsFalse(a.Equals(c));
+            Assert.IsTrue(a.Equals(d));
+
+            Assert.AreEqual(a, b);
+            Assert.AreNotEqual(a,c);
+            Assert.AreEqual(a, d);
+        }
     }
 }
 

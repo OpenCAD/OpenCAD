@@ -58,21 +58,33 @@ namespace OpenCAD.Kernel.Maths
             get { return X * X + Y * Y + Z * Z; }
         }
 
+        /// <summary>
+        /// A zero vector
+        /// </summary>
         public static Vect3 Zero
         {
             get { return new Vect3(0.0, 0.0, 0.0); }
         }
 
+        /// <summary>
+        /// A unit vector in the X direction
+        /// </summary>
         public static Vect3 UnitX
         {
             get { return new Vect3(1.0, 0.0, 0.0); }
         }
 
+        /// <summary>
+        /// A unit vector in the Y direction
+        /// </summary>
         public static Vect3 UnitY
         {
             get { return new Vect3(0.0, 1.0, 0.0); }
         }
 
+        /// <summary>
+        /// A unit vector in the Z direction
+        /// </summary>
         public static Vect3 UnitZ
         {
             get { return new Vect3(0.0, 0.0, 1.0); }
@@ -86,6 +98,36 @@ namespace OpenCAD.Kernel.Maths
         {
             var num = 1f / Length;
             return new Vect3(X * num, Y * num, Z * num);
+        }
+
+        /// <summary>
+        /// Returns a Vector perpendicular to both and therefore normal to the plane containing them.
+        /// </summary>
+        /// <param name="b">Other Vector</param>
+        /// <returns>Vector perpendicular to both and therefore normal to the plane containing them</returns>
+        public Vect3 CrossProduct(Vect3 b)
+        {
+            return new Vect3(Y * b.Z - Z * b.Y, Z * b.X - X * b.Z, X * b.Y - Y * b.X);
+        }
+
+
+
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((Vect3) obj);
+        }
+
+        protected bool Equals(Vect3 other)
+        {
+            return X.NearlyEquals(other.X) && Y.NearlyEquals(other.Y) && Z.NearlyEquals(other.Z);
+        }
+
+        public override int GetHashCode()
+        {
+            return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode();
         }
 
 
