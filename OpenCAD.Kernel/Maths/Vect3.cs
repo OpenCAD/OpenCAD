@@ -101,16 +101,119 @@ namespace OpenCAD.Kernel.Maths
         }
 
         /// <summary>
-        /// Returns a Vector perpendicular to both and therefore normal to the plane containing them.
+        /// Calculate the Cross Product
         /// </summary>
         /// <param name="b">Other Vector</param>
-        /// <returns>Vector perpendicular to both and therefore normal to the plane containing them</returns>
+        /// <returns>Cross Product</returns>
         public Vect3 CrossProduct(Vect3 b)
         {
             return new Vect3(Y * b.Z - Z * b.Y, Z * b.X - X * b.Z, X * b.Y - Y * b.X);
         }
+        
+        /// <summary>
+        /// Calculate the Dot Product
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public double DotProduct(Vect3 v)
+        {
+            return X * v.X + Y * v.Y + Z * v.Z;
+        }
 
+        /// <summary>
+        /// Add a Vector
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        public static Vect3 operator +(Vect3 v1, Vect3 v2)
+        {
+            return new Vect3(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
+        }
 
+        /// <summary>
+        /// Subtract a Vector
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        public static Vect3 operator -(Vect3 v1, Vect3 v2)
+        {
+            return new Vect3(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
+        }
+
+        /// <summary>
+        /// Invert Vector
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static Vect3 operator -(Vect3 v)
+        {
+            return new Vect3(-v.X, -v.Y, -v.Z);
+        }
+
+        /// <summary>
+        /// Multiply by double
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static Vect3 operator *(Vect3 v, double d)
+        {
+            return new Vect3(v.X * d, v.Y * d, v.Z * d);
+        }
+
+        /// <summary>
+        /// Multiply by double
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static Vect3 operator *(double d, Vect3 v)
+        {
+            return v * d;
+        }
+
+        /// <summary>
+        /// Divide by double
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static Vect3 operator /(Vect3 v, double d)
+        {
+            return new Vect3(v.X / d, v.Y / d, v.Z / d);
+        }
+
+        /// <summary>
+        /// Test for equality
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static bool operator ==(Vect3 a, Vect3 b)
+        {
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+            if (((object)a == null) || ((object)b == null))
+            {
+                return false;
+            }
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Test for not equality
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static bool operator !=(Vect3 a, Vect3 b)
+        {
+            return !(a == b);
+        }
 
 
         public override bool Equals(object obj)
@@ -130,6 +233,15 @@ namespace OpenCAD.Kernel.Maths
             return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode();
         }
 
+        public double[] ToArray()
+        {
+            return new[] { X, Y, Z };
+        }
+
+        public static Vect3 Lerp(Vect3 start, Vect3 end, double percent)
+        {
+            throw new NotImplementedException();
+        }
 
         //TODO Extensions methods XY YZ
     }
