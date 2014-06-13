@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenCAD.Kernel.Maths;
 
@@ -45,10 +46,13 @@ namespace OpenCAD.Kernel.Tests.Maths
             var x = 2.0;
             var y = 3.0;
             var z = 5.0;
-            var v = new Vect3(new[] { x, y, z });
+            var array = new[] {x, y, z};
+            var v = new Vect3(array);
             Assert.AreEqual(x, v.X, Delta);
             Assert.AreEqual(y, v.Y, Delta);
             Assert.AreEqual(z, v.Z, Delta);
+
+
         }
 
         [TestMethod]
@@ -166,8 +170,8 @@ namespace OpenCAD.Kernel.Tests.Maths
         {
             Assert.AreEqual(new Vect3(2.0, 4.5, 1.0), new Vect3(2.0, 4.5, 1.0).Lerp(new Vect3(4.0, 9.0, 2.0), 0.0));
             Assert.AreEqual(new Vect3(4.0, 9.0, 2.0), new Vect3(2.0, 4.5, 1.0).Lerp(new Vect3(4.0, 9.0, 2.0), 1.0));
-
-            Assert.AreEqual(new Vect3(0.0, 5.0, 0.0), new Vect3(0.0, 0.0, 0.0).Lerp(new Vect3(0.0, 10.0, 0.0), 1.0));
+            Assert.AreEqual(new Vect3(0.0, 5.0, 0.0), new Vect3(0.0, 0.0, 0.0).Lerp(new Vect3(0.0, 10.0, 0.0), 0.5));
+            Assert.AreEqual(new Vect3(0.0, 0.0, 0.0), new Vect3(0.0, -10.0, 0.0).Lerp(new Vect3(0.0, 10.0, 0.0), 0.5));
         }
 
     }

@@ -3,12 +3,12 @@ using OpenCAD.Kernel.Maths;
 
 namespace OpenCAD.Kernel.Geometry
 {
-    public interface ILineSegment:IGeometry
+    public interface ILineSegment : IGeometry, ICurve
     {
         IPoint Start { get; }
         IPoint End { get; }
-        Func<double, IPoint> Equation { get; }
     }
+
     public class LineSegment : ILineSegment
     {
         public IPoint Start { get; private set; }
@@ -17,7 +17,7 @@ namespace OpenCAD.Kernel.Geometry
         public Func<double, IPoint> Equation {
             get
             {
-                return d => new Point(Vect3.Zero);
+                return d => new Point(Start.Position.Lerp(End.Position, d));
             }
         }
 
@@ -25,8 +25,6 @@ namespace OpenCAD.Kernel.Geometry
         {
             Start = start;
             End = end;
-            
-
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace OpenCAD.Kernel.Geometry
 {
-    public interface IPoint
+    public interface IPoint:IGeometry
     {
         Vect3 Position { get; }
     }
