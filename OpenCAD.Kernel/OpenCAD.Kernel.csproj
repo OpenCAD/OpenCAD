@@ -40,6 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Geometry\IGeometry.cs" />
+    <Compile Include="Geometry\Line.cs" />
+    <Compile Include="Geometry\Ray.cs" />
+    <Compile Include="Geometry\LineSegment.cs" />
+    <Compile Include="Geometry\Point.cs" />
     <Compile Include="Maths\Vect3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

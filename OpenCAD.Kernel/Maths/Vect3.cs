@@ -91,7 +91,7 @@ namespace OpenCAD.Kernel.Maths
         }
 
         /// <summary>
-        /// Returns a normalized Vector
+        /// Returns a unit Vector
         /// </summary>
         /// <returns>Normalized Vector</returns>
         public Vect3 Normalized()
@@ -238,9 +238,17 @@ namespace OpenCAD.Kernel.Maths
             return new[] { X, Y, Z };
         }
 
-        public static Vect3 Lerp(Vect3 start, Vect3 end, double percent)
+
+
+        public Vect3 Lerp(Vect3 end, double t)
         {
-            throw new NotImplementedException();
+            return (1 - t) * this + t * end;
+            //return (start + t * (end - start));
+        }
+
+        public override string ToString()
+        {
+            return String.Format("Vect3<{0},{1},{2}>",ToArray());
         }
 
         //TODO Extensions methods XY YZ

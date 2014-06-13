@@ -160,6 +160,16 @@ namespace OpenCAD.Kernel.Tests.Maths
             Assert.IsTrue(a != null);
             Assert.IsTrue(a == a);
         }
+
+        [TestMethod]
+        public void Lerp()
+        {
+            Assert.AreEqual(new Vect3(2.0, 4.5, 1.0), new Vect3(2.0, 4.5, 1.0).Lerp(new Vect3(4.0, 9.0, 2.0), 0.0));
+            Assert.AreEqual(new Vect3(4.0, 9.0, 2.0), new Vect3(2.0, 4.5, 1.0).Lerp(new Vect3(4.0, 9.0, 2.0), 1.0));
+
+            Assert.AreEqual(new Vect3(0.0, 5.0, 0.0), new Vect3(0.0, 0.0, 0.0).Lerp(new Vect3(0.0, 10.0, 0.0), 1.0));
+        }
+
     }
 }
 
