@@ -11,7 +11,7 @@ namespace OpenCAD.Kernel.Maths
         /// <summary>
         /// Returns Swizzle object
         /// </summary>
-        public dynamic Swizzle { get; private set; }
+        public dynamic Swizzle { get { return new Swizzle(this); } }
 
         
 
@@ -19,14 +19,13 @@ namespace OpenCAD.Kernel.Maths
         {
             X = x;
             Y = y;
-            Swizzle = new Swizzle(this);
         }
         public Vect2(IList<double> a)
         {
             if (a.Count != 2) throw new ArgumentException("Array should be double[2]");
             X = a[0];
             Y = a[1];
-            Swizzle = new Swizzle(this);
+
         }
 
 

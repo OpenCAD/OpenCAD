@@ -13,7 +13,7 @@ namespace OpenCAD.Kernel.Maths
         /// <summary>
         /// Returns Swizzle object
         /// </summary>
-        public dynamic Swizzle { get; private set; }
+        public dynamic Swizzle { get { return new Swizzle(this); } }
 
         public Vect4(double x, double y, double z, double w)
         {
@@ -21,7 +21,6 @@ namespace OpenCAD.Kernel.Maths
             Y = y;
             Z = z;
             W = w;
-            Swizzle = new Swizzle(this);
         }
         public Vect4(IList<double> a)
         {
@@ -30,8 +29,6 @@ namespace OpenCAD.Kernel.Maths
             Y = a[1];
             Z = a[2];
             W = a[3];
-            Swizzle = new Swizzle(this);
-
         }
     }
 }
