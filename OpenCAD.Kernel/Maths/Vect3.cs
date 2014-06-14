@@ -19,6 +19,11 @@ namespace OpenCAD.Kernel.Maths
         public double Z { get; private set; }
 
         /// <summary>
+        /// Returns Swizzle object
+        /// </summary>
+        public dynamic Swizzle { get; private set; }
+
+        /// <summary>
         /// Create new Vect3 from doubles
         /// </summary>
         /// <param name="x">X Component</param>
@@ -29,6 +34,7 @@ namespace OpenCAD.Kernel.Maths
             X = x;
             Y = y;
             Z = z;
+            Swizzle = new Swizzle(this);
         }
 
         /// <summary>
@@ -41,6 +47,7 @@ namespace OpenCAD.Kernel.Maths
             X = a[0];
             Y = a[1];
             Z = a[2];
+            Swizzle = new Swizzle(this);
         }
 
         /// <summary>
@@ -248,6 +255,13 @@ namespace OpenCAD.Kernel.Maths
         {
             return String.Format("Vect3<{0},{1},{2}>",X,Y,Z);
         }
+
+
+        //Swizzling
+
+
+
+
 
         //TODO Extensions methods XY YZ
     }

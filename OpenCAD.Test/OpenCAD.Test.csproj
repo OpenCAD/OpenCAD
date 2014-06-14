@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{741A4756-823A-43D9-BB05-619BC5340756}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{3C3E3D99-1AF9-4269-8A5F-995A63087456}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenCAD.Kernel</RootNamespace>
-    <AssemblyName>OpenCAD.Kernel</AssemblyName>
+    <RootNamespace>OpenCAD.Test</RootNamespace>
+    <AssemblyName>OpenCAD.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -39,23 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Geometry\Arc.cs" />
-    <Compile Include="Geometry\ICurve.cs" />
-    <Compile Include="Geometry\IGeometry.cs" />
-    <Compile Include="Geometry\Line.cs" />
-    <Compile Include="Geometry\Plane.cs" />
-    <Compile Include="Geometry\Ray.cs" />
-    <Compile Include="Geometry\LineSegment.cs" />
-    <Compile Include="Geometry\Point.cs" />
-    <Compile Include="Maths\MathsExtensions.cs" />
-    <Compile Include="Maths\Swizzle.cs" />
-    <Compile Include="Maths\Vect2.cs" />
-    <Compile Include="Maths\Vect3.cs" />
-    <Compile Include="Maths\Vect4.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenCAD.Kernel\OpenCAD.Kernel.csproj">
+      <Project>{741a4756-823a-43d9-bb05-619bc5340756}</Project>
+      <Name>OpenCAD.Kernel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
