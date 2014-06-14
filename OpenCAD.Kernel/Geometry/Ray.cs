@@ -2,7 +2,7 @@
 
 namespace OpenCAD.Kernel.Geometry
 {
-    public interface IRay
+    public interface IRay:IGeometry
     {
         Vect3 Start { get; }
         Vect3 Direction { get; }
