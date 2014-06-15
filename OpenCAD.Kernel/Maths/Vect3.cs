@@ -246,21 +246,11 @@ namespace OpenCAD.Kernel.Maths
         public Vect3 Lerp(Vect3 end, double t)
         {
             return (1 - t) * this + t * end;
-            //return (start + t * (end - start));
         }
 
         public override string ToString()
         {
             return String.Format("Vect3<{0},{1},{2}>",X,Y,Z);
         }
-
-
-        //Swizzling
-
-
-
-
-
-        //TODO Extensions methods XY YZ
     }
 }
