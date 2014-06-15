@@ -52,7 +52,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Maths\SwizzleTests.cs" />
-    <Compile Include="Maths\Vect3Tests.cs" />
+    <Compile Include="Maths\VectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
