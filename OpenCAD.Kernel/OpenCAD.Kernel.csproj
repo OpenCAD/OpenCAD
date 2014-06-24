@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,10 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
+    <Compile Include="FileFormats\PCLFile.cs" />
     <Compile Include="Geometry\Arc.cs" />
+    <Compile Include="Geometry\IAABB.cs" />
     <Compile Include="Geometry\ICurve.cs" />
     <Compile Include="Geometry\IGeometry.cs" />
     <Compile Include="Geometry\IPolygon.cs" />
+    <Compile Include="Geometry\IPolytope.cs" />
     <Compile Include="Geometry\Line.cs" />
     <Compile Include="Geometry\Plane.cs" />
     <Compile Include="Geometry\Ray.cs" />
@@ -54,6 +58,7 @@
     <Compile Include="Maths\Vect2.cs" />
     <Compile Include="Maths\Vect3.cs" />
     <Compile Include="Maths\Vect4.cs" />
+    <Compile Include="Modelling\PointCloud.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
