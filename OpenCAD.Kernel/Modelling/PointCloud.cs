@@ -8,12 +8,11 @@ using OpenCAD.Kernel.Maths;
 
 namespace OpenCAD.Kernel.Modelling
 {
-    public class PointCloud<T>
-        where T:IPoint
+    public class PointCloud:IPointCloud
     {
-        public IList<T> Points { get; private set; }
+        public IList<IPoint> Points { get; private set; }
 
-        public PointCloud(IList<T> points)
+        public PointCloud(IList<IPoint> points)
         {
             Points = points;
         }
@@ -23,15 +22,10 @@ namespace OpenCAD.Kernel.Modelling
             throw new Exception();
         }
 
-        public IAABB CalulateAABB()
-        {
-            var maxX = Points.Max(p => p.Position.X);
-            var maxY = Points.Max(p => p.Position.Y);
-            var maxZ = Points.Max(p => p.Position.Z);
-            var minX = Points.Min(p => p.Position.X);
-            var minY = Points.Min(p => p.Position.Y);
-            var minZ = Points.Min(p => p.Position.Z);
-            return new AABB(new Vect3(minX, minY, minZ), new Vect3(maxX, maxY, maxZ));
-        }
+    }
+
+    public interface IPointCloud
+    {
+        IList<IPoint> Points { get; }
     }
 }
