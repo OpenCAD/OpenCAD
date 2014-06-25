@@ -9,7 +9,7 @@ namespace OpenCAD.Kernel.Geometry
         Vect3 Max { get; }
         Vect3 Center { get; }
         Vect3 Extent { get; }
-        IEnumerable<Vect3> Points { get; }
+
     }
 
     public class AABB : IAABB
@@ -19,25 +19,11 @@ namespace OpenCAD.Kernel.Geometry
         public Vect3 Center { get; private set; }
         public Vect3 Extent { get; private set; }
 
-        public IEnumerable<Vect3> Points
-        {
-            get
-            {
-                yield return new Vect3(Min.X, Min.Y, Min.Z);
-                yield return new Vect3(Min.X, Min.Y, Max.Z);
-                yield return new Vect3(Min.X, Max.Y, Min.Z);
-                yield return new Vect3(Min.X, Max.Y, Max.Z);
-                yield return new Vect3(Max.X, Min.Y, Min.Z);
-                yield return new Vect3(Max.X, Min.Y, Max.Z);
-                yield return new Vect3(Max.X, Max.Y, Min.Z);
-                yield return new Vect3(Max.X, Max.Y, Max.Z);
-            }
-        }
         public AABB(Vect3 min, Vect3 max)
         {
+            Center = (min + max) * 0.5;
             Min = min;
             Max = max;
-            Center = (Min + Max) * 0.5;
             Extent = Max - Min;
         }
 

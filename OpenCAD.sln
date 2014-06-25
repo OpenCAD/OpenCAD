@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCAD.Test", "OpenCAD.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCAD.Desktop", "OpenCAD.Desktop\OpenCAD.Desktop.csproj", "{0B66D56C-52F8-41B8-B82C-AAE2EC90B686}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCAD.Kernel.Graphics.OpenGLRenderer", "OpenCAD.Kernel.Graphics.OpenGLRenderer\OpenCAD.Kernel.Graphics.OpenGLRenderer.csproj", "{A316A14A-3A64-4E8F-BEF5-8635D7A9BE4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{0B66D56C-52F8-41B8-B82C-AAE2EC90B686}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B66D56C-52F8-41B8-B82C-AAE2EC90B686}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B66D56C-52F8-41B8-B82C-AAE2EC90B686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A316A14A-3A64-4E8F-BEF5-8635D7A9BE4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A316A14A-3A64-4E8F-BEF5-8635D7A9BE4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A316A14A-3A64-4E8F-BEF5-8635D7A9BE4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A316A14A-3A64-4E8F-BEF5-8635D7A9BE4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

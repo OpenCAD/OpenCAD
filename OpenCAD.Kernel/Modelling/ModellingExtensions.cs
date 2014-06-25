@@ -21,6 +21,18 @@ namespace OpenCAD.Kernel.Modelling
             }
         }
 
+        public static IEnumerable<Vect3> ToPoints(this IAABB aabb)
+        {
+            yield return new Vect3(aabb.Min.X, aabb.Min.Y, aabb.Min.Z);
+            yield return new Vect3(aabb.Min.X, aabb.Min.Y, aabb.Max.Z);
+            yield return new Vect3(aabb.Min.X, aabb.Max.Y, aabb.Min.Z);
+            yield return new Vect3(aabb.Min.X, aabb.Max.Y, aabb.Max.Z);
+            yield return new Vect3(aabb.Max.X, aabb.Min.Y, aabb.Min.Z);
+            yield return new Vect3(aabb.Max.X, aabb.Min.Y, aabb.Max.Z);
+            yield return new Vect3(aabb.Max.X, aabb.Max.Y, aabb.Min.Z);
+            yield return new Vect3(aabb.Max.X, aabb.Max.Y, aabb.Max.Z);
+        }
+
         public static IAABB CalulateAABB(this IPointCloud pointCloud)
         {
             var maxX = pointCloud.Points.Max(p => p.Position.X);

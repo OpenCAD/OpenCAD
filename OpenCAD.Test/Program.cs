@@ -4,21 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenCAD.Kernel.FileFormats;
+using OpenCAD.Kernel.Graphics.OpenGLRenderer;
 using OpenCAD.Kernel.Maths;
 
 namespace OpenCAD.Test
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            var v = Vect3.UnitY;
-            Vect2 t = v.Swizzle.YX;
-            var y = t.Swizzle.X;
+            var render = new OpenGLStaticRenderer(800, 600);
 
-
-            var f = new PCLFile("bunny.pcd");
-
+            var t = render.Render();
+            t.Save("test2.png");
         }
     }
 }
