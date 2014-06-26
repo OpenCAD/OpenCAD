@@ -61,7 +61,9 @@
     <Compile Include="Maths\Vect3.cs" />
     <Compile Include="Maths\Vect4.cs" />
     <Compile Include="Modelling\ModellingExtensions.cs" />
+    <Compile Include="Modelling\Octree\IOctreeNode.cs" />
     <Compile Include="Modelling\Octree\OctreeModel.cs" />
+    <Compile Include="Modelling\Octree\OctreeNode.cs" />
     <Compile Include="Modelling\PointCloud.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -13,10 +13,12 @@ using System.Windows.Media.Imaging;
 using SharpGL;
 using SharpGL.Enumerations;
 using SharpGL.RenderContextProviders;
+using SharpGL.SceneGraph.Primitives;
+using SharpGL.SceneGraph.Shaders;
 using SharpGL.Version;
 using SharpGL.WPF;
-using PixelFormat = System.Windows.Media.PixelFormat;
 using Point = System.Drawing.Point;
+
 
 namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
 {
@@ -24,22 +26,79 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
-        private OpenGL GL;
+
+        private OpenGL gl = new OpenGL();
+        ShaderProgram program = new ShaderProgram();
         public OpenGLStaticRenderer(int width, int height)
         {
             Width = width;
             Height = height;
-            GL = new OpenGL();
-            GL.Create(OpenGLVersion.OpenGL4_1, RenderContextType.FBO, Width, Height, 32, null);
-            GL.MakeCurrent();
 
-            GL.ShadeModel(OpenGL.GL_SMOOTH);
-            GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            GL.ClearDepth(1.0f);
-            GL.Enable(OpenGL.GL_DEPTH_TEST);
-            GL.DepthFunc(OpenGL.GL_LEQUAL);
-            GL.Hint(OpenGL.GL_PERSPECTIVE_CORRECTION_HINT, OpenGL.GL_NICEST);
 
+            lock (gl)
+            {
+                //  Create OpenGL.
+                gl.Create(OpenGLVersion.OpenGL2_1, RenderContextType.FBO, Width, Height, 32, null);
+            }
+
+            gl.ShadeModel(OpenGL.GL_SMOOTH);
+            gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            gl.ClearDepth(1.0f);
+            gl.Enable(OpenGL.GL_DEPTH_TEST);
+            gl.DepthFunc(OpenGL.GL_LEQUAL);
+            gl.Hint(OpenGL.GL_PERSPECTIVE_CORRECTION_HINT, OpenGL.GL_NICEST);
+
+
+            gl.Enable(OpenGL.GL_DEPTH_TEST);
+
+            float[] global_ambient = new float[] { 0.5f, 0.5f, 0.5f, 1.0f };
+            float[] light0pos = new float[] { 0.0f, 5.0f, 10.0f, 1.0f };
+            float[] light0ambient = new float[] { 0.2f, 0.2f, 0.2f, 1.0f };
+            float[] light0diffuse = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };
+            float[] light0specular = new float[] { 0.8f, 0.8f, 0.8f, 1.0f };
+
+            float[] lmodel_ambient = new float[] { 0.2f, 0.2f, 0.2f, 1.0f };
+            gl.LightModel(OpenGL.GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
+
+            gl.LightModel(OpenGL.GL_LIGHT_MODEL_AMBIENT, global_ambient);
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, light0pos);
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_AMBIENT, light0ambient);
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_DIFFUSE, light0diffuse);
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_SPECULAR, light0specular);
+            gl.Enable(OpenGL.GL_LIGHTING);
+            gl.Enable(OpenGL.GL_LIGHT0);
+
+            gl.ShadeModel(OpenGL.GL_SMOOTH);
+
+            //  Create a vertex shader.
+            VertexShader vertexShader = new VertexShader();
+            vertexShader.CreateInContext(gl);
+            vertexShader.SetSource(
+                "void main()" + Environment.NewLine +
+                "{" + Environment.NewLine +
+                "gl_Position = ftransform();" + Environment.NewLine +
+                "}" + Environment.NewLine);
+
+            //  Create a fragment shader.
+            FragmentShader fragmentShader = new FragmentShader();
+            fragmentShader.CreateInContext(gl);
+            fragmentShader.SetSource(
+                "void main()" + Environment.NewLine +
+                "{" + Environment.NewLine +
+                "gl_FragColor = vec4(0.4,0.4,0.8,1.0);" + Environment.NewLine +
+                "}" + Environment.NewLine);
+
+            //  Compile them both.
+            vertexShader.Compile();
+            fragmentShader.Compile();
+
+            //  Build a program.
+            program.CreateInContext(gl);
+
+            //  Attach the shaders.
+            program.AttachShader(vertexShader);
+            program.AttachShader(fragmentShader);
+            program.Link();
             //GL.Enable(OpenGL.GL_TEXTURE_2D);
             //GL.Enable(OpenGL.GL_CULL_FACE);
             //GL.Enable(OpenGL.GL_DEPTH_TEST);
@@ -57,28 +116,54 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             //GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         }
-
+        float rotation = 0;
         public Image Render()
         {
-            GL.MakeCurrent();
-            GL.SetDimensions(Width, Height);
-            GL.Viewport(0, 0, Width, Height);
+            gl.MakeCurrent();
+            lock (gl)
+            {
+                gl.SetDimensions(Width, Height);
 
-            GL.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
-            GL.ClearColor(1f, 0.0f, 0f, 0f);
+                //	Set the viewport.
+                gl.Viewport(0, 0, Width, Height);
+
+                gl.MatrixMode(OpenGL.GL_PROJECTION);
+                gl.LoadIdentity();
+
+                // Calculate The Aspect Ratio Of The Window
+                gl.Perspective(45.0f, Width / (float)Height, 0.1f, 100.0f);
+
+                gl.MatrixMode(OpenGL.GL_MODELVIEW);
+                gl.LoadIdentity();
+            }
 
 
+            // Clear The Screen And The Depth Buffer
+            gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
+            gl.ClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+            // Move Left And Into The Screen
+            gl.LoadIdentity();
+            gl.Translate(0.0f, 0.0f, -6.0f);
 
-            //GL.DrawText(5, 5, 1.0f, 0.0f, 0.0f, "Courier New", 12.0f, string.Format("Draw Time: {0:0.0000} ms ~ {1:0.0} FPS",4,4));
-            GL.Flush();
+            program.Push(gl, null);
+            gl.Rotate(rotation, 0.0f, 1.0f, 0.0f);
 
-            GL.Blit(IntPtr.Zero);
+            Teapot tp = new Teapot();
+            tp.Draw(gl, 14, 1, OpenGL.GL_FILL);
 
+            rotation += 3.0f;
+            program.Pop(gl, null);
 
-            var provider = GL.RenderContextProvider as FBORenderContextProvider;
+            gl.DrawText(5, 5, 1.0f, 0.0f, 0.0f, "Courier New", 12.0f,  string.Format("Draw Time: {0:0.0000} ms ~ {1:0.0} FPS", 444, 1000.0 / 444));
+            gl.Flush();
+
+            gl.Blit(IntPtr.Zero);
+            var provider = gl.RenderContextProvider as FBORenderContextProvider;
+            //  TODO: We have to remove the alpha channel - for some reason it comes out as 0.0 
+            //  meaning the drawing comes out transparent.
+            var newFormatedBitmapSource = new FormatConvertedBitmap();
             if (provider == null) return null;
 
-            var newFormatedBitmapSource = new FormatConvertedBitmap();
             newFormatedBitmapSource.BeginInit();
             newFormatedBitmapSource.Source = BitmapConversion.HBitmapToBitmapSource(provider.InternalDIBSection.HBitmap);
             newFormatedBitmapSource.DestinationFormat = PixelFormats.Rgb24;
@@ -87,9 +172,9 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             return BitmapFromSource(newFormatedBitmapSource);
         }
 
-        private System.Drawing.Bitmap BitmapFromSource(BitmapSource bitmapsource)
+        private Bitmap BitmapFromSource(BitmapSource bitmapsource)
         {
-            System.Drawing.Bitmap bitmap;
+            Bitmap bitmap;
             MemoryStream outStream = new MemoryStream();
          
                 BitmapEncoder enc = new BmpBitmapEncoder();
@@ -100,43 +185,6 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             return bitmap;
         }
 
-        public static System.Drawing.Bitmap BitmapSourceToBitmap2(BitmapSource srs)
-        {
-            int width = srs.PixelWidth;
-            int height = srs.PixelHeight;
-            int stride = width * ((srs.Format.BitsPerPixel + 7) / 8);
-            IntPtr ptr = IntPtr.Zero;
-            try
-            {
-                ptr = Marshal.AllocHGlobal(height * stride);
-                srs.CopyPixels(new Int32Rect(0, 0, width, height), ptr, height * stride, stride);
-                using (var btm = new System.Drawing.Bitmap(width, height, stride, System.Drawing.Imaging.PixelFormat.Format32bppRgb, ptr))
-                {
-                    return new System.Drawing.Bitmap(btm);
-                }
-            }
-            finally
-            {
-                if (ptr != IntPtr.Zero)
-                    Marshal.FreeHGlobal(ptr);
-            }
-        }
-
-        Bitmap GetBitmap(BitmapSource source)
-        {
-            Bitmap bmp = new Bitmap(source.PixelWidth,source.PixelHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            BitmapData data = bmp.LockBits(
-              new Rectangle(Point.Empty, bmp.Size),
-              ImageLockMode.WriteOnly,
-              System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            source.CopyPixels(
-              Int32Rect.Empty,
-              data.Scan0,
-              data.Height * data.Stride,
-              data.Stride);
-            bmp.UnlockBits(data);
-            return bmp;
-        }
         public void Dispose()
         {
             
