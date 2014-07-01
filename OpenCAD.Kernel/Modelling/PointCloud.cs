@@ -10,22 +10,22 @@ namespace OpenCAD.Kernel.Modelling
 {
     public class PointCloud:IPointCloud
     {
-        public IList<IPoint> Points { get; private set; }
+        public List<IPoint> Points { get; protected set; }
 
-        public PointCloud(IList<IPoint> points)
+        public PointCloud(List<IPoint> points)
         {
             Points = points;
         }
 
-        public void ConvexHull()
+        protected PointCloud()
         {
-            throw new Exception();
+            Points = new List<IPoint>();
         }
 
     }
 
     public interface IPointCloud
     {
-        IList<IPoint> Points { get; }
+        List<IPoint> Points { get; }
     }
 }

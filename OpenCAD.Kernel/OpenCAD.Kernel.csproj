@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
+    <Compile Include="FileFormats\AsciiPoints.cs" />
     <Compile Include="FileFormats\PCLFile.cs" />
     <Compile Include="Geometry\Arc.cs" />
     <Compile Include="Geometry\IAABB.cs" />
@@ -53,8 +54,17 @@
     <Compile Include="Geometry\Ray.cs" />
     <Compile Include="Geometry\LineSegment.cs" />
     <Compile Include="Geometry\Point.cs" />
+    <Compile Include="Graphics\Backgrounds\BaseBackground.cs" />
+    <Compile Include="Graphics\Backgrounds\GradientBackground.cs" />
+    <Compile Include="Graphics\Backgrounds\IBackground.cs" />
+    <Compile Include="Graphics\Backgrounds\SolidBackground.cs" />
+    <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />
+    <Compile Include="Graphics\IStaticScene.cs" />
+    <Compile Include="Graphics\StaticScene.cs" />
     <Compile Include="Materials\IMaterial.cs" />
+    <Compile Include="Maths\Angle.cs" />
+    <Compile Include="Maths\Mat4.cs" />
     <Compile Include="Maths\MathsExtensions.cs" />
     <Compile Include="Maths\Swizzle.cs" />
     <Compile Include="Maths\Vect2.cs" />

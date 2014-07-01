@@ -12,5 +12,14 @@ namespace OpenCAD.Kernel.Maths
         {
             return Math.Abs(x - y) <= Math.Abs(x * .00001);
         }
+
+        public static double Map(this double x, double inMin, double inMax, double outMin, double outMax)
+        {
+            return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        }
+        public static float Map(this float x, float inMin, float inMax, float outMin, float outMax)
+        {
+            return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        }
     }
 }

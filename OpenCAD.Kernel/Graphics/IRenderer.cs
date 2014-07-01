@@ -16,7 +16,8 @@ namespace OpenCAD.Kernel.Graphics
     {
         int Width { get; }
         int Height { get; }
-        
-        Image Render();
+
+
+        Image Render(Action<IStaticScene> action);
     }
 }
