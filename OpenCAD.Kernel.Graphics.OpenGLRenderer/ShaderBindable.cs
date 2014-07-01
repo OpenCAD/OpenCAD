@@ -11,40 +11,18 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
 {
     public class ShaderBindable : IBindable
     {
-        protected readonly OpenGL _gl;
-        protected ShaderProgram _program;
-
-        public ShaderBindable(OpenGL gl)
-        {
-            _gl = gl;
-        }
-
-        public void Bind()
-        {
-            _program.Push(_gl, null);
-        }
-
-        public void UnBind()
-        {
-            _program.Pop(_gl, null);
-        }
-    }
-
-
-    public class Shade : IBindable
-    {
         private readonly OpenGL _gl;
         public dynamic Uniforms { get; private set; }
 
         protected ShaderProgram _program;
 
-        public Shade(OpenGL gl, params string[] files):
+        public ShaderBindable(OpenGL gl, params string[] files):
             this(gl, DefaultTypeDetector,files)
         {
 
         }
 
-        public Shade(OpenGL gl, Func<string, Shader> typeDetector, params string[] files)
+        public ShaderBindable(OpenGL gl, Func<string, Shader> typeDetector, params string[] files)
         {
             _gl = gl;
             if (typeDetector == null) throw new ArgumentNullException("typeDetector");
@@ -137,6 +115,11 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             if (type == typeof(Mat4))
             {
                 _gl.UniformMatrix4(location, 1, false, (value as Mat4).ToColumnMajorArrayFloat());
+                return true;
+            }
+            if (type == typeof(float))
+            {
+                _gl.Uniform1(location, (float) value);
                 return true;
             }
             return false;

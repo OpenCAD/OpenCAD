@@ -4,7 +4,6 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using OpenCAD.Kernel.Graphics.OpenGLRenderer.Buffers;
-using OpenCAD.Kernel.Graphics.OpenGLRenderer.Shaders;
 using SharpGL;
 using SharpGL.Enumerations;
 using SharpGL.RenderContextProviders;
@@ -55,7 +54,7 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
                 //_postProcesser = new PostProcesser(gl, width, height);
 
 
-                var t = new Shade(gl, "Shaders/Background.vert", "Shaders/Background.frag");
+                //var t = new ShaderBindable(gl, "Shaders/Background.vert", "Shaders/Background.frag");
 
 
             }
@@ -139,7 +138,7 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
     {
         private readonly OpenGL _gl;
         private FBO _fbo;
-        private FlatShader _flatProgram;
+        private ShaderBindable _flatProgram;
 
         private VAO _flat;
         private VBO _flatBuffer;
@@ -150,7 +149,12 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             _gl = gl;
             _fbo = new FBO(gl, width, height);
 
-            _flatProgram = new FlatShader(gl);
+            _flatProgram = new ShaderBindable(gl, "Shaders/Flat.vert", "Shaders/Flat.frag");
+
+
+
+
+
             _flat = new VAO(gl);
             _flatBuffer = new VBO(gl);
             using (new Bind(_flat))
@@ -183,7 +187,7 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             using (new Bind(_flat))
             using (new Bind(_fbo.ColorTexture))
             {
-                _flatProgram.Offset = (float)((DateTime.Now.ToUniversalTime().Subtract(_start).TotalMilliseconds) / 1000.0 * 2 * Math.PI);
+                _flatProgram.Uniforms.offset = (float)((DateTime.Now.ToUniversalTime().Subtract(_start).TotalMilliseconds) / 1000.0 * 2 * Math.PI);
                 _gl.DrawArrays(OpenGL.GL_TRIANGLE_STRIP, 0, 4);
             }
         }

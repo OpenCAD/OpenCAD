@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenCAD.Kernel.FileFormats;
+using OpenCAD.Kernel.Geometry;
 using OpenCAD.Kernel.Graphics;
 using OpenCAD.Kernel.Graphics.Backgrounds;
 using OpenCAD.Kernel.Graphics.OpenGLRenderer;
@@ -19,10 +20,15 @@ namespace OpenCAD.Test
     {
         public static void Main(string[] args)
         {
-            //var t = new AsciiPoints("bunny.ascii");
+            var t = new AsciiPoints("bunny.ascii");
 
-            var points = new List<Point>();
-            points.Add(new Point(Vect3.Zero));
+            var points = new List<IPoint>
+            {
+                new Point(Vect3.Zero),
+                new ColorPoint(Vect3.UnitX, Color.Green),
+                new ColorPoint(Vect3.UnitY, Color.Purple),
+                new ColorPoint(Vect3.UnitZ, Color.Snow)
+            };
 
 
             using (var render = new OpenGLStaticRenderer(800, 600))

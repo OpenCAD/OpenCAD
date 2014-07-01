@@ -12,12 +12,12 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
         private readonly OpenGL _gl;
         private readonly VAO _vao;
 
-        private readonly Shade _program;
+        private readonly ShaderBindable _program;
 
         public BackgroundRenderer(OpenGL gl, IBackground background)
         {
             _gl = gl;
-            _program = new Shade(gl, "Shaders/Background.vert", "Shaders/Background.frag");
+            _program = new ShaderBindable(gl, "Shaders/Background.vert", "Shaders/Background.frag");
             //_program.Uniforms.test = Mat4.Identity;
 
 

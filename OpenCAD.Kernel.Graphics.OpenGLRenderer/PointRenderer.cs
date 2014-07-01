@@ -5,7 +5,6 @@ using System.Linq;
 using OpenCAD.Kernel.Geometry;
 using OpenCAD.Kernel.Graphics.Backgrounds;
 using OpenCAD.Kernel.Graphics.OpenGLRenderer.Buffers;
-using OpenCAD.Kernel.Graphics.OpenGLRenderer.Shaders;
 using OpenCAD.Kernel.Maths;
 using SharpGL;
 
@@ -17,7 +16,7 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
         private readonly IStaticScene _scene;
         private readonly VAO _vao;
         private VBO _vbo;
-        private Shade _program;
+        private ShaderBindable _program;
 
         private int count = 0;
         public PointRenderer(OpenGL gl, IStaticScene scene)
@@ -25,7 +24,7 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             _gl = gl;
             _scene = scene;
 
-            _program = new Shade(gl, "Shaders/Point.vert", "Shaders/Point.frag");
+            _program = new ShaderBindable(gl, "Shaders/Point.vert", "Shaders/Point.frag");
             _vao = new VAO(gl);
             _vbo = new VBO(gl);
 
@@ -72,7 +71,7 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             {
 
                 //_program.MVP = _scene.Camera.MVP;
-                _program.Uniforms.MVP = Mat4.Scale(4) * Mat4.Translate(-0.2, -0.2, 0);
+                _program.Uniforms.MVP = Mat4.Scale(0.05);// * Mat4.Translate(-0.2, -0.2, 0);
                 //_program.MVP = _scene.Camera.MVP * Mat4.Scale(5);
 
                 _gl.PointSize(3f);
