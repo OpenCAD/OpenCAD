@@ -18,15 +18,12 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
         {
             _gl = gl;
             _program = new ShaderBindable(gl, "Shaders/Background.vert", "Shaders/Background.frag");
-            //_program.Uniforms.test = Mat4.Identity;
-
 
             _vao = new VAO(gl);
             var flatBuffer = new VBO(gl);
             using (new Bind(_vao))
             using (new Bind(flatBuffer))
             {
-
 
                 var data = new List<float>();
                 data.AddRange(new float[] { -1, -1 });
@@ -39,11 +36,8 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
                 data.AddRange(new float[] { -1,  1 });
                 data.AddRange(background.TopLeft.ToFloatArray());
 
-
                 data.AddRange(new float[] { 1, 1 });
                 data.AddRange(background.TopRight.ToFloatArray());
-
-
 
                 var flatData = data.ToArray();
 

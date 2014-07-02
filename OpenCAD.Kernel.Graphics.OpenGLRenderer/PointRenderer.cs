@@ -5,6 +5,7 @@ using System.Linq;
 using OpenCAD.Kernel.Geometry;
 using OpenCAD.Kernel.Graphics.Backgrounds;
 using OpenCAD.Kernel.Graphics.OpenGLRenderer.Buffers;
+using OpenCAD.Kernel.Graphics.OpenGLRenderer.Vertices;
 using OpenCAD.Kernel.Maths;
 using SharpGL;
 
@@ -31,37 +32,19 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             using (new Bind(_vao))
             using (new Bind(_vbo))
             {
-
-                var data = new List<float>();
                 count = scene.Points.Count;
-                
 
-                foreach (var point in scene.Points)
-                {
-                    data.AddRange(point.Position.ToArray().Select(d=>(float)d));
-                    data.AddRange(point.Color.ToFloatArray());
-                }
-
-                var flatData = data.ToArray();
-
-                _vbo.Update(flatData, flatData.Length * sizeof(float));
-
-                const int stride = sizeof(float) * 7;
+                var data = scene.Points.Select(p => new Vertex(p.Position, p.Color)).SelectMany(v => v.Data).ToArray();
+                _vbo.Update(data, count * Vertex.Stride);
 
                 gl.EnableVertexAttribArray(0);
-                gl.VertexAttribPointer(0, 3, OpenGL.GL_FLOAT, false, stride, new IntPtr(0));
+                gl.VertexAttribPointer(0, 3, OpenGL.GL_FLOAT, false, Vertex.Stride, new IntPtr(0));
 
                 gl.EnableVertexAttribArray(1);
-                gl.VertexAttribPointer(1, 4, OpenGL.GL_FLOAT, false, stride, new IntPtr(sizeof(float) * 3));
+                gl.VertexAttribPointer(1, 4, OpenGL.GL_FLOAT, false, Vertex.Stride, new IntPtr(sizeof(float) * 3));
 
                 gl.BindVertexArray(0);
             }
-        }
-
-
-        public void Update(ICamera camera)
-        {
-
         }
 
         public void Render()
@@ -79,4 +62,6 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             }
         }
     }
+
+
 }
