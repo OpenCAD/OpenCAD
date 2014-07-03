@@ -1,4 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using OpenCAD.Kernel.Graphics.OpenGLRenderer.Vertices;
 using SharpGL;
 
 namespace OpenCAD.Kernel.Graphics.OpenGLRenderer.Buffers
@@ -26,6 +29,18 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer.Buffers
             _gl.BufferData(OpenGL.GL_ARRAY_BUFFER, size, pointer, OpenGL.GL_STATIC_DRAW);
         }
 
+        public void Update(byte[] data)
+        {
+            var pointer = GCHandle.Alloc(data, GCHandleType.Pinned).AddrOfPinnedObject();
+            _gl.BufferData(OpenGL.GL_ARRAY_BUFFER, data.Length, pointer, OpenGL.GL_STATIC_DRAW);
+        }
+
+        public void Update(IEnumerable<Vertex> vertices)
+        {
+            Update(vertices.SelectMany(v => v.Data).ToArray());
+        }
+
+
         //public void Update<T>(IEnumerable<T> vertices)where T:IVertex
         //{
 
@@ -39,5 +54,7 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer.Buffers
         {
             _gl.BindBuffer(OpenGL.GL_ARRAY_BUFFER, 0);
         }
+
+
     }
 }

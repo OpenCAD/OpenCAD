@@ -4,18 +4,32 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer.Buffers
 {
     public class Bind : IDisposable
     {
-        private readonly IBindable _asset;
-        public Bind(IBindable asset)
+        private readonly IBindable[] _assets;
+        public Bind(params IBindable[] assets)
         {
-            _asset = asset;
-            _asset.Bind();
+            _assets = assets;
+            foreach (var asset in _assets)
+            {
+                asset.Bind();
+            }
+            
         }
+        
 
         public void Dispose()
         {
-            _asset.UnBind();
+            foreach (var asset in _assets)
+            {
+                asset.UnBind();
+            }
+            
         }
-        public static Bind Asset(IBindable asset)
+        public static Bind These(params IBindable[] assets)
+        {
+            return new Bind(assets);
+        }
+
+        public static Bind This(IBindable asset)
         {
             return new Bind(asset);
         }

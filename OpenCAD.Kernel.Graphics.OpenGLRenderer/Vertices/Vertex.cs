@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -20,13 +21,13 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer.Vertices
 
         public static int Stride { get { return Marshal.SizeOf(typeof(Vertex)); } }
 
-        public float[] Data
+        public byte[] Data
         {
             get
             {
-                var data = new List<float>(7);
-                data.AddRange(Position.ToArray().Select(d => (float)d));
-                data.AddRange(Color.ToFloatArray());
+                var data = new List<byte>();
+                data.AddRange(Position.ToArray().SelectMany(d => BitConverter.GetBytes((float) d)));
+                data.AddRange(Color.ToFloatArray().SelectMany(BitConverter.GetBytes));
                 return data.ToArray();
             }
         }

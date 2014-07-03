@@ -28,29 +28,24 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             _program = new ShaderBindable(gl, "Shaders/Point.vert", "Shaders/Point.frag");
             _vao = new VAO(gl);
             _vbo = new VBO(gl);
-
-            using (new Bind(_vao))
-            using (new Bind(_vbo))
+            
+            using (Bind.These(_vao,_vbo))
             {
                 count = scene.Points.Count;
 
-                var data = scene.Points.Select(p => new Vertex(p.Position, p.Color)).SelectMany(v => v.Data).ToArray();
-                _vbo.Update(data, count * Vertex.Stride);
+                _vbo.Update(scene.Points.Select(p => new Vertex(p.Position, p.Color)));
 
                 gl.EnableVertexAttribArray(0);
                 gl.VertexAttribPointer(0, 3, OpenGL.GL_FLOAT, false, Vertex.Stride, new IntPtr(0));
 
                 gl.EnableVertexAttribArray(1);
                 gl.VertexAttribPointer(1, 4, OpenGL.GL_FLOAT, false, Vertex.Stride, new IntPtr(sizeof(float) * 3));
-
-                gl.BindVertexArray(0);
             }
         }
 
         public void Render()
         {
-            using (new Bind(_program))
-            using (new Bind(_vao))
+            using (Bind.These(_program,_vao))
             {
 
                 //_program.MVP = _scene.Camera.MVP;

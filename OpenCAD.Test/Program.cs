@@ -25,8 +25,8 @@ namespace OpenCAD.Test
             var points = new List<IPoint>
             {
                 new Point(Vect3.Zero),
-                new ColorPoint(Vect3.UnitX, Color.Green),
-                new ColorPoint(Vect3.UnitY, Color.Purple),
+                new ColorPoint(Vect3.UnitX, Color.SeaGreen),
+                new ColorPoint(Vect3.UnitY, Color.RoyalBlue),
                 new ColorPoint(Vect3.UnitZ, Color.Snow)
             };
 

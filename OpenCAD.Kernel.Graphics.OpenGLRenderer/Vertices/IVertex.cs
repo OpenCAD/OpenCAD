@@ -6,6 +6,6 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer.Vertices
 {
     public interface IVertex
     {
-
+        byte[] Data { get; }
     }
 }
