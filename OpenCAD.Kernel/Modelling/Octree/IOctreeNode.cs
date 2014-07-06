@@ -9,7 +9,7 @@ namespace OpenCAD.Kernel.Modelling.Octree
         Double Size { get; }
         int Level { get; }
         NodeType Type { get; }
-        IReadOnlyList<IOctreeNode> Children { get; }
+        IEnumerable<IOctreeNode> Children { get; }
     }
 
     public enum NodeType { Interior, Filled, Empty }

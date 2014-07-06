@@ -21,7 +21,6 @@ namespace OpenCAD.Kernel.Modelling
         {
             Points = new List<IPoint>();
         }
-
     }
 
     public interface IPointCloud

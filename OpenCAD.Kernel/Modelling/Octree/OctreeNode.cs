@@ -1,31 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenCAD.Kernel.Geometry;
 using OpenCAD.Kernel.Maths;
 
 namespace OpenCAD.Kernel.Modelling.Octree
 {
-    public class OctreeNode : IOctreeNode
+    public class OctreeNode : AABB,IOctreeNode
     {
-        public Vect3 Min { get { return Center + new Vect3(-Size / 2.0, -Size / 2.0, -Size / 2.0); } }
-        public Vect3 Max { get { return Center + new Vect3(Size / 2.0, Size / 2.0, Size / 2.0); } }
-        public Vect3 Extent { get { return new Vect3(Size, Size, Size); } }
-
-        public Vect3 Center { get; private set; }
-
         public Double Size { get; private set; }
-
         public int Level { get; private set; }
         public NodeType Type { get; private set; }
-        public IReadOnlyList<IOctreeNode> Children { get; private set; }
+        public IEnumerable<IOctreeNode> Children { get; private set; }
 
         public OctreeNode(Vect3 center, Double size, int level, NodeType type)
+            :base(center, size)
         {
-            Center = center;
             Size = size;
             Level = level;
             Type = type;
-            Children = Enumerable.Empty<OctreeNode>().ToList();
+            Children = Enumerable.Empty<OctreeNode>();
         }
 
         public OctreeNode(Vect3 center, Double size, NodeType type)
