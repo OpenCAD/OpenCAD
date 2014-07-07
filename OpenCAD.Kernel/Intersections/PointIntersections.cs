@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenCAD.Kernel.Geometry;
+using OpenCAD.Kernel.Maths;
 
 namespace OpenCAD.Kernel.Intersections
 {
@@ -18,7 +19,7 @@ namespace OpenCAD.Kernel.Intersections
         public static bool In(this IPoint p, IAABB box)
         {
             var distance = box.Center - p.Position;
-            return (Math.Abs(distance.X) <= box.HalfSize.X) & (Math.Abs(distance.Y) <= box.HalfSize.Y) & (Math.Abs(distance.Z) <= box.HalfSize.Z);
+            return (Math.Abs(distance.X).NearlyEquals(box.HalfSize.X) && Math.Abs(distance.Y).NearlyEquals(box.HalfSize.Y) && Math.Abs(distance.Z).NearlyEquals(box.HalfSize.Z)) || (Math.Abs(distance.X) <= box.HalfSize.X) && (Math.Abs(distance.Y) <= box.HalfSize.Y) && (Math.Abs(distance.Z) <= box.HalfSize.Z);
         }
     }
 }

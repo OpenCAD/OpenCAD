@@ -11,7 +11,7 @@ namespace OpenCAD.Kernel.Tests.Modelling
         public void OctreeTest()
         {
 
-            var node = new OctreeNode(16);
+            //var node = new OctreeNode(16);
 
         }
     }

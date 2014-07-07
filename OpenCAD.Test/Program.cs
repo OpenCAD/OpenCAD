@@ -12,6 +12,8 @@ using OpenCAD.Kernel.Graphics;
 using OpenCAD.Kernel.Graphics.Backgrounds;
 using OpenCAD.Kernel.Graphics.OpenGLRenderer;
 using OpenCAD.Kernel.Maths;
+using OpenCAD.Kernel.Modelling;
+using OpenCAD.Kernel.Modelling.Octree;
 using Point = OpenCAD.Kernel.Geometry.Point;
 
 namespace OpenCAD.Test
@@ -22,32 +24,53 @@ namespace OpenCAD.Test
         {
             var t = new AsciiPoints("bunny.ascii");
 
+
+
+
+            var size = 10.0;
+
+
+
             var points = new List<IPoint>
             {
-                new Point(Vect3.Zero),
-                new ColorPoint(Vect3.UnitX, Color.SeaGreen),
-                new ColorPoint(Vect3.UnitY, Color.RoyalBlue),
-                new ColorPoint(Vect3.UnitZ, Color.Snow)
+                new Point(new Vect3(+size, +size, +size)),
+                new Point(new Vect3(-size, +size, +size)),
+                new Point(new Vect3(-size, -size, +size)),
+                new Point(new Vect3(+size, -size, +size)),
+                new Point(new Vect3(+size, +size, -size)),
+                new Point(new Vect3(-size, +size, -size)),
+                new Point(new Vect3(-size, -size, -size)),
+                new Point(new Vect3(+size, -size, -size)),
             };
+            var oct = t.ToOctree(5);
+
+            var res = oct.Root.Flatten().Where(n => n.Type == NodeType.Filled).ToArray();
+            //var points = new List<IPoint>
+            //{
+            //    new Point(Vect3.Zero),
+            //    new ColorPoint(Vect3.UnitX, Color.SeaGreen),
+            //    new ColorPoint(Vect3.UnitY, Color.RoyalBlue),
+            //    new ColorPoint(Vect3.UnitZ, Color.Snow)
+            //};
 
 
-            using (var render = new OpenGLStaticRenderer(800, 600))
-            {
-                render.Text = "Testing";
-                render.Render(scene =>
-                {
-                    scene.Background = new GradientBackground(Color.Red, Color.Blue, Color.Plum, Color.Aquamarine);
+            //using (var render = new OpenGLStaticRenderer(800, 600))
+            //{
+            //    render.Text = "Testing";
+            //    render.Render(scene =>
+            //    {
+            //        scene.Background = new GradientBackground(Color.Red, Color.Blue, Color.Plum, Color.Aquamarine);
 
-                    scene.Camera = new OrthographicCamera();
+            //        scene.Camera = new OrthographicCamera();
 
-                    scene.Points.AddRange(points);
+            //        scene.Points.AddRange(points);
 
                     
-                }).Save("output.png");
+            //    }).Save("output.png");
 
                 
-                Process.Start(@"P:\OpenCAD\OpenCAD.Test\bin\Debug\output.png");
-            }
+            //    Process.Start(@"P:\OpenCAD\OpenCAD.Test\bin\Debug\output.png");
+            //}
 
             //var render = new OpenGLStaticRenderer(800, 600);
 
@@ -55,7 +78,7 @@ namespace OpenCAD.Test
 
             //t.Save("test2.png");
 
-
+            Console.ReadLine();
         }
     }
 }

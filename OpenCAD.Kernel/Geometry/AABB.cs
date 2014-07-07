@@ -21,7 +21,6 @@ namespace OpenCAD.Kernel.Geometry
         }
 
         public Vect3 Center { get; private set; }
-        public Vect3 HalfWidth { get; set; }
         public Vect3 HalfSize { get; private set; }
 
         public AABB(Vect3 center, double size)
@@ -30,10 +29,10 @@ namespace OpenCAD.Kernel.Geometry
             HalfSize = new Vect3(size / 2.0, size / 2.0, size / 2.0);
         }
 
-        public AABB(Vect3 center, Vect3 halfWidth)
+        public AABB(Vect3 center, Vect3 halfSize)
         {
             Center = center;
-            HalfWidth = halfWidth;
+            HalfSize = halfSize;
         }
     }
 }
