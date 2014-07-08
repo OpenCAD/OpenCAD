@@ -36,60 +36,28 @@ namespace OpenCAD.Kernel.Modelling
 
         public static IAABB CalulateAABB(this IPointCloud pointCloud)
         {
-            //this is quite slow, need to not use linq...
-            //var minX = pointCloud.Points.First().Position.X;
-            //var minY = pointCloud.Points.First().Position.Y;
-            //var minZ = pointCloud.Points.First().Position.Z;
-            //var maxX = pointCloud.Points.First().Position.X;
-            //var maxY = pointCloud.Points.First().Position.Y;
-            //var maxZ = pointCloud.Points.First().Position.Z;
-
-            //foreach (var point in pointCloud.Points.Skip(1))
-            //{
-            //    minX = Math.Min(minX,point.Position.X);
-            //    minY = Math.Min(minY,point.Position.Y);
-            //    minZ = Math.Min(minZ,point.Position.Z);
-            //    maxX = Math.Min(maxX,point.Position.X);
-            //    maxY = Math.Min(maxY,point.Position.Y);
-            //    maxZ = Math.Min(maxZ,point.Position.Z);
-            //}
-            //var min = new Vect3(minX, minY, minZ);
-            //var max = new Vect3(maxX, maxY, maxZ);
-            //return new AABB((min + max) * 0.5f, (min - max) * 0.5f);
-
-            var min = new Vect3(pointCloud.Points.Min(p => p.Position.X), pointCloud.Points.Min(p => p.Position.Y), pointCloud.Points.Min(p => p.Position.Z));
-            var max = new Vect3(pointCloud.Points.Max(p => p.Position.X), pointCloud.Points.Max(p => p.Position.Y), pointCloud.Points.Max(p => p.Position.Z));
+            var agg = pointCloud.Points.Aggregate(new
+            {
+                MinX = Double.PositiveInfinity,
+                MinY = Double.PositiveInfinity,
+                MinZ = Double.PositiveInfinity,
+                MaxX = Double.NegativeInfinity,
+                MaxY = Double.NegativeInfinity,
+                MaxZ = Double.NegativeInfinity,
+            }, (a, p) => new
+            {
+                MinX = Math.Min(a.MinX,p.Position.X),
+                MinY = Math.Min(a.MinY,p.Position.Y),
+                MinZ = Math.Min(a.MinZ,p.Position.Z),
+                MaxX = Math.Max(a.MaxX,p.Position.X),
+                MaxY = Math.Max(a.MaxY,p.Position.Y),
+                MaxZ = Math.Max(a.MaxZ,p.Position.Z),
+            });
+            var min = new Vect3(agg.MinX, agg.MinY, agg.MinZ);
+            var max = new Vect3(agg.MaxX, agg.MaxY, agg.MaxZ);
             return new AABB((max + min) * 0.5f, (max - min) * 0.5f);
         }
 
-        private static IOctreeNode Intersect(this IOctreeNode node, Func<IOctreeNode,bool> testFunc,  int maxLevel)
-        {
-            if (testFunc(node))
-            {
-                if (node.Level == maxLevel)
-                {
-                    return new OctreeNode(node.Center, node.Size, node.Level, NodeType.Filled);
-                }
-                else
-                {
-                    switch (node.Type)
-                    {
-                        case NodeType.Interior:
-                            return new OctreeNode(node.Center, node.Size, node.Level, NodeType.Interior, node.Children.Select(c => c.Intersect(testFunc, maxLevel)).ToArray());
-                        case NodeType.Filled:
-                            return node;
-                        case NodeType.Empty:
-                            return new OctreeNode(node.Center, node.Size, node.Level, NodeType.Interior, node.CreateChildren().Select(c => c.Intersect(testFunc, maxLevel)).ToArray());
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-            }
-            else
-            {
-                return node;
-            }
-        }
 
         public static OctreeModel ToOctree(this IPointCloud pointCloud, int maxLevel)
         {

@@ -42,7 +42,7 @@ namespace OpenCAD.Test
                 new Point(new Vect3(-size, -size, -size)),
                 new Point(new Vect3(+size, -size, -size)),
             };
-            var oct = t.ToOctree(5);
+            var oct = t.ToOctree(6);
 
             var res = oct.Root.Flatten().Where(n => n.Type == NodeType.Filled).ToArray();
             //var points = new List<IPoint>

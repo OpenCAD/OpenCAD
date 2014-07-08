@@ -13,6 +13,24 @@ namespace OpenCAD.Kernel.Maths
             return Math.Abs(x - y) <= Math.Abs(x * .00001);
         }
 
+        public static bool NearlyLessThanOrEquals(this Double x, Double y, Double epsilon = 0.0000001)
+        {
+            if (x.NearlyEquals(y, epsilon))
+            {
+                return true;
+            }
+            return x <= y;
+        }
+
+        public static bool NearlyGreaterThanOrEquals(this Double x, Double y, Double epsilon = 0.0000001)
+        {
+            if (x.NearlyEquals(y, epsilon))
+            {
+                return true;
+            }
+            return x >= y;
+        }
+
         public static double Map(this double x, double inMin, double inMax, double outMin, double outMax)
         {
             return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
