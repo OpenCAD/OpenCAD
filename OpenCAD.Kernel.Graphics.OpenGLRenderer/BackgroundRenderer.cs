@@ -24,20 +24,16 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             using (new Bind(_vao))
             using (new Bind(flatBuffer))
             {
-
                 var data = new List<float>();
                 data.AddRange(new float[] { -1, -1 });
                 data.AddRange(background.BottomLeft.ToFloatArray());
-
                 data.AddRange(new float[] {  1, -1 });
                 data.AddRange(background.BottomRight.ToFloatArray());
-
-
-                data.AddRange(new float[] { -1,  1 });
-                data.AddRange(background.TopLeft.ToFloatArray());
-
-                data.AddRange(new float[] { 1, 1 });
+                data.AddRange(new float[] { 1,  1 });
                 data.AddRange(background.TopRight.ToFloatArray());
+
+                data.AddRange(new float[] { -1, 1 });
+                data.AddRange(background.TopLeft.ToFloatArray());
 
                 var flatData = data.ToArray();
 
@@ -62,7 +58,7 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
             using (new Bind(_vao))
             {
                 _gl.Disable(OpenGL.GL_DEPTH_TEST);
-                _gl.DrawArrays(OpenGL.GL_TRIANGLE_STRIP, 0, 4);
+                _gl.DrawArrays(OpenGL.GL_QUADS, 0, 4);
                 _gl.Enable(OpenGL.GL_DEPTH_TEST);
             }
         }

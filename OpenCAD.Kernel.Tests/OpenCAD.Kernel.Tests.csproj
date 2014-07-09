@@ -51,7 +51,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Intersections\AABBTests.cs" />
+    <Compile Include="Intersections\PointTests.cs" />
     <Compile Include="Maths\SwizzleTests.cs" />
+    <Compile Include="Maths\MathsExtensionsTest.cs" />
     <Compile Include="Maths\VectorTests.cs" />
     <Compile Include="Modelling\OctreeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

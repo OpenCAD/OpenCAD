@@ -42,9 +42,18 @@ namespace OpenCAD.Test
                 new Point(new Vect3(-size, -size, -size)),
                 new Point(new Vect3(+size, -size, -size)),
             };
-            var oct = t.ToOctree(6);
 
-            var res = oct.Root.Flatten().Where(n => n.Type == NodeType.Filled).ToArray();
+
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            var oct = t.ToOctree(10);
+
+            stopWatch.Stop();
+            Console.WriteLine(stopWatch.ElapsedMilliseconds);
+ 
+
+
             //var points = new List<IPoint>
             //{
             //    new Point(Vect3.Zero),
@@ -54,23 +63,23 @@ namespace OpenCAD.Test
             //};
 
 
-            //using (var render = new OpenGLStaticRenderer(800, 600))
-            //{
-            //    render.Text = "Testing";
-            //    render.Render(scene =>
-            //    {
-            //        scene.Background = new GradientBackground(Color.Red, Color.Blue, Color.Plum, Color.Aquamarine);
+            using (var render = new OpenGLStaticRenderer(800, 600))
+            {
+                render.Text = "Testing";
+                render.Render(scene =>
+                {
+                    scene.Background = new GradientBackground(Color.Red, Color.Blue, Color.Plum, Color.Aquamarine);
 
-            //        scene.Camera = new OrthographicCamera();
+                    scene.Camera = new OrthographicCamera();
 
-            //        scene.Points.AddRange(points);
+                    scene.Points.AddRange(points);
 
-                    
-            //    }).Save("output.png");
 
-                
-            //    Process.Start(@"P:\OpenCAD\OpenCAD.Test\bin\Debug\output.png");
-            //}
+                }).Save("output.png");
+
+
+                Process.Start(@"P:\OpenCAD\OpenCAD.Test\bin\Debug\output.png");
+            }
 
             //var render = new OpenGLStaticRenderer(800, 600);
 

@@ -63,6 +63,7 @@
     <Compile Include="Graphics\IRenderer.cs" />
     <Compile Include="Graphics\IStaticScene.cs" />
     <Compile Include="Graphics\StaticScene.cs" />
+    <Compile Include="Intersections\AABBIntersections.cs" />
     <Compile Include="Intersections\IntersectionExtensions.cs" />
     <Compile Include="Intersections\PointIntersections.cs" />
     <Compile Include="Materials\IMaterial.cs" />

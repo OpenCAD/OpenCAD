@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenCAD.Kernel.Geometry;
 using OpenCAD.Kernel.Intersections;
 using OpenCAD.Kernel.Maths;
@@ -12,15 +10,6 @@ namespace OpenCAD.Kernel.Modelling
 {
     public static class ModellingExtensions
     {
-        //public static void ToOctreeNode(this IPointCloud pointCloud)
-        //{
-        //    var size = pointCloud.CalulateAABB().Extent.ToArray().Max();
-        //    var node = new OctreeNode(size);
-        //    foreach (var point in pointCloud.Points)
-        //    {
-                
-        //    }
-        //}
 
         public static IEnumerable<Vect3> ToPoints(this IAABB aabb)
         {
@@ -65,6 +54,15 @@ namespace OpenCAD.Kernel.Modelling
             var size = Math.Abs(box.HalfSize.ToArray().Max() * 2.0) ;
             IOctreeNode node = new OctreeNode(box.Center, size, 0, NodeType.Empty);
             return new OctreeModel(pointCloud.Points.Aggregate(node, (current, point) => current.Intersect(point.In, maxLevel)));
+        }
+
+        public static OctreeModel ToOctreeParallel(this IPointCloud pointCloud, int maxLevel)
+        {
+            //unsure if this will work
+            var box = pointCloud.CalulateAABB();
+            var size = Math.Abs(box.HalfSize.ToArray().Max() * 2.0);
+            IOctreeNode node = new OctreeNode(box.Center, size, 0, NodeType.Empty);
+            return new OctreeModel(pointCloud.Points.AsParallel().WithDegreeOfParallelism(8).Aggregate(node, (current, point) => current.Intersect(point.In, maxLevel)));
         }
 
         public static IEnumerable<IOctreeNode> Flatten(this IOctreeNode node)
