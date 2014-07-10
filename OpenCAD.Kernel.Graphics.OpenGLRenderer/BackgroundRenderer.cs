@@ -31,7 +31,6 @@ namespace OpenCAD.Kernel.Graphics.OpenGLRenderer
                 data.AddRange(background.BottomRight.ToFloatArray());
                 data.AddRange(new float[] { 1,  1 });
                 data.AddRange(background.TopRight.ToFloatArray());
-
                 data.AddRange(new float[] { -1, 1 });
                 data.AddRange(background.TopLeft.ToFloatArray());
 

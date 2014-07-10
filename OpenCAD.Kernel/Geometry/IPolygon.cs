@@ -6,6 +6,9 @@ namespace OpenCAD.Kernel.Geometry
 {
     public interface IPolygon : IPolytope
     {
+        //IPlane Plane { get; }
+        IList<IPoint> Points { get; }
+        IList<ILineSegment> Edges { get; }
         //bool IsConvex();
         //bool IsSimple();
         //bool IsConcave();
@@ -13,6 +16,8 @@ namespace OpenCAD.Kernel.Geometry
 
     public abstract class BasePolygon:IPolygon
     {
+        // IPlane Plane { get; private set; }
+
         public IList<IPoint> Points { get; protected set; }
         public IList<ILineSegment> Edges { get; protected set; }
 

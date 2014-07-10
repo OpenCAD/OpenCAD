@@ -42,7 +42,12 @@
   <ItemGroup>
     <Compile Include="Extensions.cs" />
     <Compile Include="FileFormats\AsciiPoints.cs" />
+    <Compile Include="FileFormats\IFileFormat.cs" />
+    <Compile Include="FileFormats\IFileReader.cs" />
     <Compile Include="FileFormats\PCLFile.cs" />
+    <Compile Include="FileFormats\STL\STLFile.cs" />
+    <Compile Include="FileFormats\STL\STLReader.cs" />
+    <Compile Include="FileFormats\STL\STLWriter.cs" />
     <Compile Include="Geometry\AABB.cs" />
     <Compile Include="Geometry\Arc.cs" />
     <Compile Include="Geometry\IAABB.cs" />
@@ -74,11 +79,13 @@
     <Compile Include="Maths\Vect2.cs" />
     <Compile Include="Maths\Vect3.cs" />
     <Compile Include="Maths\Vect4.cs" />
+    <Compile Include="Modelling\IModel.cs" />
     <Compile Include="Modelling\ModellingExtensions.cs" />
     <Compile Include="Modelling\Octree\IOctreeNode.cs" />
     <Compile Include="Modelling\Octree\OctreeModel.cs" />
     <Compile Include="Modelling\Octree\OctreeNode.cs" />
     <Compile Include="Modelling\PointCloud.cs" />
+    <Compile Include="Modelling\PolygonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
