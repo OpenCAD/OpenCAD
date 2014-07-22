@@ -7,11 +7,12 @@ using OpenCAD.Kernel.Geometry;
 
 namespace OpenCAD.Kernel.Modelling
 {
-    public class PolygonModel:IModel
+    public class PolygonModel<T>:IModel
+        where T : IPolygon
     {
-        public IList<IPolygon> Polygons { get; private set; }
+        public IList<T> Polygons { get; private set; }
 
-        public PolygonModel(IList<IPolygon> polygons)
+        public PolygonModel(IList<T> polygons)
         {
             Polygons = polygons;
         }

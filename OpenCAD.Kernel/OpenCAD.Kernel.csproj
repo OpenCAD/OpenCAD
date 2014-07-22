@@ -64,6 +64,7 @@
     <Compile Include="Graphics\Backgrounds\GradientBackground.cs" />
     <Compile Include="Graphics\Backgrounds\IBackground.cs" />
     <Compile Include="Graphics\Backgrounds\SolidBackground.cs" />
+    <Compile Include="Graphics\GUI\IGUI.cs" />
     <Compile Include="Graphics\ICamera.cs" />
     <Compile Include="Graphics\IRenderer.cs" />
     <Compile Include="Graphics\IStaticScene.cs" />

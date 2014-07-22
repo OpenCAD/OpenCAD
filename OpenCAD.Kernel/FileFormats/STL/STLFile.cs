@@ -21,9 +21,9 @@ namespace OpenCAD.Kernel.FileFormats.STL
             Triangles = triangles;
         }
 
-        public PolygonModel ToPolygonModel()
-        {
-            throw new Exception();
-        }
+        //public PolygonModel ToPolygonModel()
+        //{
+        //    throw new Exception();
+        //}
     }
 }
