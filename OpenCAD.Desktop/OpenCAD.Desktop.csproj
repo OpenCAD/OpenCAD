@@ -4,17 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{741A4756-823A-43D9-BB05-619BC5340756}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{9F3FF01F-CF86-463C-B0E6-F9C29020AD97}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenCAD.Kernel</RootNamespace>
-    <AssemblyName>OpenCAD.Kernel</AssemblyName>
+    <RootNamespace>OpenCAD.Desktop</RootNamespace>
+    <AssemblyName>OpenCAD.Desktop</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,9 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Pencil.Gaming.GLFW3">
+      <HintPath>..\packages\Pencil.Gaming.GLFW3.1.0.4955\lib\NET40\Pencil.Gaming.GLFW3.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -44,7 +51,8 @@
     <Reference Include="System.Reactive.Linq">
       <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
+    <Reference Include="System.Reactive.PlatformServices, Version=2.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
@@ -54,62 +62,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\Messaging\IHandle.cs" />
-    <Compile Include="Application\Messaging\IMessageAggregator.cs" />
-    <Compile Include="Application\IApplication.cs" />
-    <Compile Include="Application\Messaging\Messages\WindowMessages.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="FileFormats\AsciiPoints.cs" />
-    <Compile Include="FileFormats\IFileFormat.cs" />
-    <Compile Include="FileFormats\IFileReader.cs" />
-    <Compile Include="FileFormats\PCLFile.cs" />
-    <Compile Include="FileFormats\STL\STLFile.cs" />
-    <Compile Include="FileFormats\STL\STLReader.cs" />
-    <Compile Include="FileFormats\STL\STLWriter.cs" />
-    <Compile Include="Geometry\AABB.cs" />
-    <Compile Include="Geometry\Arc.cs" />
-    <Compile Include="Geometry\IAABB.cs" />
-    <Compile Include="Geometry\ICurve.cs" />
-    <Compile Include="Geometry\IGeometry.cs" />
-    <Compile Include="Geometry\IPolygon.cs" />
-    <Compile Include="Geometry\IPolytope.cs" />
-    <Compile Include="Geometry\Line.cs" />
-    <Compile Include="Geometry\Plane.cs" />
-    <Compile Include="Geometry\Ray.cs" />
-    <Compile Include="Geometry\LineSegment.cs" />
-    <Compile Include="Geometry\Point.cs" />
-    <Compile Include="Graphics\Backgrounds\BaseBackground.cs" />
-    <Compile Include="Graphics\Backgrounds\GradientBackground.cs" />
-    <Compile Include="Graphics\Backgrounds\IBackground.cs" />
-    <Compile Include="Graphics\Backgrounds\SolidBackground.cs" />
-    <Compile Include="Graphics\GUI\IGUI.cs" />
-    <Compile Include="Graphics\ICamera.cs" />
-    <Compile Include="Graphics\IRenderer.cs" />
-    <Compile Include="Graphics\IStaticScene.cs" />
-    <Compile Include="Graphics\StaticScene.cs" />
-    <Compile Include="Graphics\Window\IWindow.cs" />
-    <Compile Include="Intersections\AABBIntersections.cs" />
-    <Compile Include="Intersections\IntersectionExtensions.cs" />
-    <Compile Include="Intersections\PointIntersections.cs" />
-    <Compile Include="Materials\IMaterial.cs" />
-    <Compile Include="Maths\Angle.cs" />
-    <Compile Include="Maths\Mat4.cs" />
-    <Compile Include="Maths\MathsExtensions.cs" />
-    <Compile Include="Maths\Swizzle.cs" />
-    <Compile Include="Maths\Vect2.cs" />
-    <Compile Include="Maths\Vect3.cs" />
-    <Compile Include="Maths\Vect4.cs" />
-    <Compile Include="Modelling\IModel.cs" />
-    <Compile Include="Modelling\ModellingExtensions.cs" />
-    <Compile Include="Modelling\Octree\IOctreeNode.cs" />
-    <Compile Include="Modelling\Octree\OctreeModel.cs" />
-    <Compile Include="Modelling\Octree\OctreeNode.cs" />
-    <Compile Include="Modelling\PointCloud.cs" />
-    <Compile Include="Modelling\PolygonModel.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenCAD.Awesomium\OpenCAD.Awesomium.csproj">
+      <Project>{BF9F0DA0-FB65-42C1-A49B-4296FD841EDA}</Project>
+      <Name>OpenCAD.Awesomium</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenCAD.Kernel\OpenCAD.Kernel.csproj">
+      <Project>{741A4756-823A-43D9-BB05-619BC5340756}</Project>
+      <Name>OpenCAD.Kernel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenCAD.OpenGL\OpenCAD.OpenGL.csproj">
+      <Project>{D377617B-E19F-49F4-AB9C-B6BC57815155}</Project>
+      <Name>OpenCAD.OpenGL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
@@ -119,6 +91,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+xcopy /s /y "$(SolutionDir)packages\Pencil.Gaming.GLFW3.1.0.4955\NativeBinaries\x86\*.*" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

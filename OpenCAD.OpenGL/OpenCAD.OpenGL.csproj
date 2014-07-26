@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{741A4756-823A-43D9-BB05-619BC5340756}</ProjectGuid>
+    <ProjectGuid>{D377617B-E19F-49F4-AB9C-B6BC57815155}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenCAD.Kernel</RootNamespace>
-    <AssemblyName>OpenCAD.Kernel</AssemblyName>
+    <RootNamespace>OpenCAD.OpenGL</RootNamespace>
+    <AssemblyName>OpenCAD.OpenGL</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -32,13 +32,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Pencil.Gaming.GLFW3">
+      <HintPath>..\packages\Pencil.Gaming.GLFW3.1.0.4955\lib\NET40\Pencil.Gaming.GLFW3.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Interfaces">
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Linq">
@@ -54,62 +58,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\Messaging\IHandle.cs" />
-    <Compile Include="Application\Messaging\IMessageAggregator.cs" />
-    <Compile Include="Application\IApplication.cs" />
-    <Compile Include="Application\Messaging\Messages\WindowMessages.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="FileFormats\AsciiPoints.cs" />
-    <Compile Include="FileFormats\IFileFormat.cs" />
-    <Compile Include="FileFormats\IFileReader.cs" />
-    <Compile Include="FileFormats\PCLFile.cs" />
-    <Compile Include="FileFormats\STL\STLFile.cs" />
-    <Compile Include="FileFormats\STL\STLReader.cs" />
-    <Compile Include="FileFormats\STL\STLWriter.cs" />
-    <Compile Include="Geometry\AABB.cs" />
-    <Compile Include="Geometry\Arc.cs" />
-    <Compile Include="Geometry\IAABB.cs" />
-    <Compile Include="Geometry\ICurve.cs" />
-    <Compile Include="Geometry\IGeometry.cs" />
-    <Compile Include="Geometry\IPolygon.cs" />
-    <Compile Include="Geometry\IPolytope.cs" />
-    <Compile Include="Geometry\Line.cs" />
-    <Compile Include="Geometry\Plane.cs" />
-    <Compile Include="Geometry\Ray.cs" />
-    <Compile Include="Geometry\LineSegment.cs" />
-    <Compile Include="Geometry\Point.cs" />
-    <Compile Include="Graphics\Backgrounds\BaseBackground.cs" />
-    <Compile Include="Graphics\Backgrounds\GradientBackground.cs" />
-    <Compile Include="Graphics\Backgrounds\IBackground.cs" />
-    <Compile Include="Graphics\Backgrounds\SolidBackground.cs" />
-    <Compile Include="Graphics\GUI\IGUI.cs" />
-    <Compile Include="Graphics\ICamera.cs" />
-    <Compile Include="Graphics\IRenderer.cs" />
-    <Compile Include="Graphics\IStaticScene.cs" />
-    <Compile Include="Graphics\StaticScene.cs" />
-    <Compile Include="Graphics\Window\IWindow.cs" />
-    <Compile Include="Intersections\AABBIntersections.cs" />
-    <Compile Include="Intersections\IntersectionExtensions.cs" />
-    <Compile Include="Intersections\PointIntersections.cs" />
-    <Compile Include="Materials\IMaterial.cs" />
-    <Compile Include="Maths\Angle.cs" />
-    <Compile Include="Maths\Mat4.cs" />
-    <Compile Include="Maths\MathsExtensions.cs" />
-    <Compile Include="Maths\Swizzle.cs" />
-    <Compile Include="Maths\Vect2.cs" />
-    <Compile Include="Maths\Vect3.cs" />
-    <Compile Include="Maths\Vect4.cs" />
-    <Compile Include="Modelling\IModel.cs" />
-    <Compile Include="Modelling\ModellingExtensions.cs" />
-    <Compile Include="Modelling\Octree\IOctreeNode.cs" />
-    <Compile Include="Modelling\Octree\OctreeModel.cs" />
-    <Compile Include="Modelling\Octree\OctreeNode.cs" />
-    <Compile Include="Modelling\PointCloud.cs" />
-    <Compile Include="Modelling\PolygonModel.cs" />
+    <Compile Include="OpenGLWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OpenCAD.Kernel\OpenCAD.Kernel.csproj">
+      <Project>{741A4756-823A-43D9-BB05-619BC5340756}</Project>
+      <Name>OpenCAD.Kernel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Shaders\test.geom">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\test.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\test.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
@@ -119,6 +87,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+xcopy /s /y "$(SolutionDir)packages\Pencil.Gaming.GLFW3.1.0.4955\NativeBinaries\x86\*.*" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

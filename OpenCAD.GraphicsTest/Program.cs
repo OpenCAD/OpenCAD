@@ -20,9 +20,12 @@ namespace OpenCAD.GraphicsTest
 
             });
             WebCore.CreateWebSession(new WebPreferences() { CustomCSS = "::-webkit-scrollbar { visibility: hidden; }" });
+
+
             var webView = WebCore.CreateWebView(800, 600);
             webView.IsTransparent = true;
             webView.Source = new Uri("http://google.com");
+
             webView.LoadingFrameComplete += (s, e) =>
             {
                 Console.WriteLine(String.Format("Frame Loaded: {0}", e.FrameId));
@@ -42,7 +45,7 @@ namespace OpenCAD.GraphicsTest
             WebCore.Run();
             // Initialize GLFW system
             Glfw.Init();
-
+             
             // Create GLFW window
             var window = Glfw.CreateWindow(800, 600, "OpenCAD", GlfwMonitorPtr.Null, GlfwWindowPtr.Null);
 

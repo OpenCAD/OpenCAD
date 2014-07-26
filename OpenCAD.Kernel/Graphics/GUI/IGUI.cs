@@ -1,10 +1,19 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Threading;
 
 namespace OpenCAD.Kernel.Graphics.GUI
 {
-    public interface IGUI
+    public interface IGUI:IDisposable
     {
-
-        Image Surface { get; }
+        int Width { get; }
+        int Height { get; }
+        //byte[] Render();
+        void Update();
+        bool IsDirty { get; }
+        byte[] Data { get; }
+        void Resize(int width, int height);
+        // event NewImageEventHandler NewImageData;
     }
+    //public delegate void NewImageEventHandler(object sender, byte[] image);
 }
