@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using OpenCAD.Kernel.Graphics.GUI;
 using OpenCAD.Kernel.Graphics.Window;
 
 namespace OpenCAD.Kernel.Application
@@ -32,10 +26,7 @@ namespace OpenCAD.Kernel.Application
         public override void Run()
         {
             //this blocks...
-
             _windowManager.Create();
-            _windowManager.Create();
-
         }
 
         public override void Dispose()

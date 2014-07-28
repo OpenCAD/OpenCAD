@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading;
+using OpenCAD.Kernel.Graphics.Window;
 
 namespace OpenCAD.Kernel.Graphics.GUI
 {
@@ -16,4 +17,9 @@ namespace OpenCAD.Kernel.Graphics.GUI
         // event NewImageEventHandler NewImageData;
     }
     //public delegate void NewImageEventHandler(object sender, byte[] image);
+
+    public interface IGUIManager
+    {
+        IWindow Create();
+    }
 }

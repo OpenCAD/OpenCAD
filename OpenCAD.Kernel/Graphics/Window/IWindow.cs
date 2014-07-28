@@ -9,13 +9,31 @@ using OpenCAD.Kernel.Application.Messaging.Messages;
 
 namespace OpenCAD.Kernel.Graphics.Window
 {
-    public interface IWindow:IDisposable,IHandle<ResizeRequestMessage>
+    public interface IWindow:IDisposable
     {
         Guid Guid { get; }
         void Run();
+        void Resize(int width, int height);
+
     }
 
-    public interface IWindowManager
+    public abstract class BaseWindow:IWindow
+    {
+        public Guid Guid { get; protected set; }
+        protected BaseWindow()
+        {
+            Guid = Guid.NewGuid();
+        }
+
+
+        public abstract void Dispose();
+
+        public abstract void Run();
+        public abstract void Resize(int width, int height);
+    }
+
+
+    public interface IWindowManager:IHandle<ResizeRequestMessage>
     {
         List<IWindow> Windows { get; }
         IWindow Create();
@@ -34,6 +52,10 @@ namespace OpenCAD.Kernel.Graphics.Window
 
         public abstract IWindow Create();
 
+        public void Handle(ResizeRequestMessage message)
+        {
+            message.Window.Resize(message.Width, message.Height);
+        }
     }
 
     

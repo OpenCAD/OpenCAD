@@ -62,7 +62,7 @@ namespace OpenCAD.Awesomium
                     _surface = new BitmapSurface(Width, Height);
                     e.Surface = _surface;
                 };
-                webView.Source = new Uri("http://www.zen66964.zen.co.uk/");
+                webView.Source = new Uri("http://www.google.co.uk/");
             }, null);
 
        
@@ -78,7 +78,7 @@ namespace OpenCAD.Awesomium
                     // This part saves us from double copying everything.
                     fixed (Byte* imagePtr = _data)
                     {
-                        _surface.CopyTo((IntPtr)imagePtr, _surface.Width * 4, 4, true, false);
+                        _surface.CopyTo((IntPtr)imagePtr, _surface.Width * 4, 4, false, false);
                     }
                 }
                 IsDirty = true;

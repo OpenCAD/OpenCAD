@@ -1,6 +1,6 @@
-﻿#version 150
-in vec3 Color;
-out vec4 outColor;
+﻿#version 400
+uniform sampler2D tex;
+in vec2 outTex;
 void main() {
-   outColor = vec4(Color, 1.0);
+    gl_FragColor = texture2D(tex, outTex);
 }

@@ -1,26 +1,28 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using OpenCAD.Kernel.Application.Messaging.Messages;
+using OpenCAD.Kernel.Graphics.Backgrounds;
 using OpenCAD.Kernel.Graphics.GUI;
 using OpenCAD.Kernel.Graphics.Window;
+using OpenCAD.OpenGL.Renderers;
 using Pencil.Gaming;
 using Pencil.Gaming.Graphics;
 
 namespace OpenCAD.OpenGL
 {
-    public class OpenGLWindow:IWindow
+    public class OpenGLWindow : BaseWindow
     {
         private readonly IGUI _gui;
         private GlfwWindowPtr _window;
-        public Guid Guid { get; protected set; }
 
         public OpenGLWindow(IGUI gui)
         {
             _gui = gui;
-            Guid = Guid.NewGuid();
+
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
 
             //var vertices = new float[] { 0.75f, 0.75f, 0.0f };
@@ -44,8 +46,6 @@ namespace OpenCAD.OpenGL
             //GL.ShaderSource(vertexShader,1,File.ReadAllLines("Shaders/test.vert"),ref length);
             //GL.CompileShader(vertexShader);
 
-
-
             //var geoShader = GL.CreateShader(ShaderType.GeometryShader);
             //int length2 = 0;
             //GL.ShaderSource(geoShader, 1, File.ReadAllLines("Shaders/test.geom"), ref length2);
@@ -64,7 +64,7 @@ namespace OpenCAD.OpenGL
             //GL.DrawArrays(BeginMode.Points, 0, 1);
         }
 
-        public void Run()
+        public override void Run()
         {
             Glfw.Init();
 
@@ -76,10 +76,13 @@ namespace OpenCAD.OpenGL
 
             GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.VertexArray);
+            GL.Enable(EnableCap.CullFace);
+            GL.Enable(EnableCap.DepthTest);
 
+            GL.Enable(EnableCap.Blend);
 
-
-
+            var back = new BackgroundRenderer(new GradientBackground(Color.YellowGreen, Color.Blue, Color.Plum, Color.Aquamarine));
+            var test = new TestRenderer();
 
             var vertexPositions = new[] { 0.75f, 0.75f, 0.0f, 1.0f, 0.75f, -0.75f, 0.0f, 1.0f, -0.75f, -0.75f, 0.0f, 1.0f, };
 
@@ -89,7 +92,7 @@ namespace OpenCAD.OpenGL
             GL.BindBuffer(BufferTarget.ArrayBuffer, positionBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(vertexPositions.Length * sizeof(float)), vertexPositions, BufferUsageHint.StaticDraw);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-
+            Console.WriteLine(GL.GetError());
 
             while (!Glfw.WindowShouldClose(_window))
             {
@@ -105,9 +108,9 @@ namespace OpenCAD.OpenGL
                 _gui.Update();
                 if (_gui.IsDirty)
                 {
-                    Console.WriteLine("Dirt");
+                    Console.WriteLine("Dirty");
                     var t = _gui.Data;
-                    // GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, 2, 2, 0, PixelFormat.Rgb, PixelType.Byte, gui.Data);
+                    test.Texture.Update(t,800,600);
                 }
                 // Set OpenGL clear colour to red
                 GL.ClearColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -115,6 +118,9 @@ namespace OpenCAD.OpenGL
                 // Clear the screen
                 GL.Clear(ClearBufferMask.ColorBufferBit);
 
+
+                back.Render();
+                test.Render();
                 GL.BindBuffer(BufferTarget.ArrayBuffer, positionBufferObject);
                 GL.EnableVertexAttribArray(0);
                 GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, 0, IntPtr.Zero);
@@ -128,10 +134,9 @@ namespace OpenCAD.OpenGL
 
         }
 
-        public void Handle(ResizeRequestMessage message)
+        public override void Resize(int width, int height)
         {
-            if(message.Window.Guid != Guid) return;
-            Glfw.SetWindowSize(_window, message.Width, message.Height);
+            Glfw.SetWindowSize(_window, width, height);
         }
     }
 }
