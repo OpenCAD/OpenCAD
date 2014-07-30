@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenCAD.Kernel.Graphics.GUI;
 using Pencil.Gaming.Graphics;
 
 namespace OpenCAD.OpenGL.Buffers
@@ -24,7 +25,12 @@ namespace OpenCAD.OpenGL.Buffers
                 GL.TexParameter(_target, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
             }
         }
-        
+
+        public void Update(IGUI gui)
+        {
+            Update(gui.Data,gui.Size);
+        }
+
         public void Update(Bitmap bitmap)
         {
             using (new Bind(this))
@@ -35,11 +41,11 @@ namespace OpenCAD.OpenGL.Buffers
             }
         }
 
-        public void Update(byte[] data, int width, int height)
+        public void Update(byte[] data, Size size)
         {
             using (new Bind(this))
             {
-                GL.TexImage2D(_target, 0, PixelInternalFormat.Rgba, width, height, 0, Pencil.Gaming.Graphics.PixelFormat.Bgra, PixelType.UnsignedByte, data);
+                GL.TexImage2D(_target, 0, PixelInternalFormat.Rgba, size.Width, size.Height, 0, Pencil.Gaming.Graphics.PixelFormat.Bgra, PixelType.UnsignedByte, data);
             }
         }
 

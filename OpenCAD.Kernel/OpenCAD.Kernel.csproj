@@ -58,6 +58,7 @@
     <Compile Include="Application\Messaging\IMessageAggregator.cs" />
     <Compile Include="Application\IApplication.cs" />
     <Compile Include="Application\Messaging\Messages\WindowMessages.cs" />
+    <Compile Include="Application\MouseButton.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileFormats\AsciiPoints.cs" />
     <Compile Include="FileFormats\IFileFormat.cs" />

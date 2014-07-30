@@ -64,13 +64,20 @@ namespace OpenCAD.OpenGL
             //GL.DrawArrays(BeginMode.Points, 0, 1);
         }
 
-        public override void Run()
+        public override void Run(Size size)
         {
             Glfw.Init();
 
             // Create GLFW window
-            _window = Glfw.CreateWindow(800, 600, "OpenCAD", GlfwMonitorPtr.Null, GlfwWindowPtr.Null);
-            Glfw.SetWindowSizeCallback(_window, (wnd, width, height) => GL.Viewport(0, 0, width, height));
+            _window = Glfw.CreateWindow(size.Width, size.Height, "OpenCAD", GlfwMonitorPtr.Null, GlfwWindowPtr.Null);
+            Glfw.SetWindowSizeCallback(_window, (wnd, newwidth, newheight) =>
+            {
+                GL.Viewport(0, 0, newwidth, newheight);
+                _gui.Resize(new Size(newwidth, newheight));
+            });
+
+            Glfw.SetCursorPosCallback(_window, (wnd, x, y) => _gui.MouseMove(new Point((int) x,(int) y)));
+            Glfw.SetMouseButtonCallback(_window, OnCbfun);
             // Enable the OpenGL context for the current window
             Glfw.MakeContextCurrent(_window);
 
@@ -78,7 +85,6 @@ namespace OpenCAD.OpenGL
             GL.Enable(EnableCap.VertexArray);
             GL.Enable(EnableCap.CullFace);
             GL.Enable(EnableCap.DepthTest);
-
             GL.Enable(EnableCap.Blend);
 
             var back = new BackgroundRenderer(new GradientBackground(Color.YellowGreen, Color.Blue, Color.Plum, Color.Aquamarine));
@@ -93,6 +99,9 @@ namespace OpenCAD.OpenGL
             GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(vertexPositions.Length * sizeof(float)), vertexPositions, BufferUsageHint.StaticDraw);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             Console.WriteLine(GL.GetError());
+
+
+            _gui.Resize(size);
 
             while (!Glfw.WindowShouldClose(_window))
             {
@@ -109,8 +118,7 @@ namespace OpenCAD.OpenGL
                 if (_gui.IsDirty)
                 {
                     Console.WriteLine("Dirty");
-                    var t = _gui.Data;
-                    test.Texture.Update(t,800,600);
+                    test.Texture.Update(_gui);
                 }
                 // Set OpenGL clear colour to red
                 GL.ClearColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -134,9 +142,14 @@ namespace OpenCAD.OpenGL
 
         }
 
-        public override void Resize(int width, int height)
+        private void OnCbfun(GlfwWindowPtr wnd, MouseButton btn, KeyAction action)
         {
-            Glfw.SetWindowSize(_window, width, height);
+            _gui.MouseButton(btn.ToButton(),action == KeyAction.Press);
+        }
+
+        public override void Resize(Size size)
+        {
+            Glfw.SetWindowSize(_window, size.Width, size.Height);
         }
     }
 }

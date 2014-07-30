@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,8 +13,8 @@ namespace OpenCAD.Kernel.Graphics.Window
     public interface IWindow:IDisposable
     {
         Guid Guid { get; }
-        void Run();
-        void Resize(int width, int height);
+        void Run(Size size);
+        void Resize(Size size);
 
     }
 
@@ -28,8 +29,8 @@ namespace OpenCAD.Kernel.Graphics.Window
 
         public abstract void Dispose();
 
-        public abstract void Run();
-        public abstract void Resize(int width, int height);
+        public abstract void Run(Size size);
+        public abstract void Resize(Size size);
     }
 
 
@@ -54,7 +55,7 @@ namespace OpenCAD.Kernel.Graphics.Window
 
         public void Handle(ResizeRequestMessage message)
         {
-            message.Window.Resize(message.Width, message.Height);
+            message.Window.Resize(new Size(message.Width, message.Height));
         }
     }
 
@@ -72,7 +73,7 @@ namespace OpenCAD.Kernel.Graphics.Window
         {
             var window = _windowBuilder();
             Windows.Add(window);
-            new Thread(window.Run).Start();
+            new Thread(() => window.Run(new Size(800, 600))).Start();
             return window;
         }
     }

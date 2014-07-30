@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Awesomium.Core;
+using Awesomium.Core.Data;
 using OpenCAD.Kernel.Graphics.GUI;
+using MouseButton = OpenCAD.Kernel.Application.MouseButton;
 
 namespace OpenCAD.Awesomium
 {
     public class AwesomiumGUI : IGUI
     {
         private Thread _thread;
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-
         //public event NewImageEventHandler NewImageData;
 
         private WebView webView;
@@ -28,10 +29,8 @@ namespace OpenCAD.Awesomium
 
         public AwesomiumGUI()
         {
-            Width = 800;
-            Height = 600;
-
-            _data = new Byte[Width * 4 * Height];
+            Size = new Size(100,100);
+            _data = new Byte[Size.Width * 4 * Size.Height];
             _thread = new Thread(() =>
             {
                 WebCore.Started += (s, e) =>
@@ -39,7 +38,17 @@ namespace OpenCAD.Awesomium
                     _awesomiumContext = SynchronizationContext.Current;
                     _awesomiumReady.Set();
                 };
-                WebCore.CreateWebSession(new WebPreferences() { CustomCSS = "::-webkit-scrollbar { visibility: hidden; }" });
+                
+                var session = WebCore.CreateWebSession(new WebPreferences
+                {
+                    //CustomCSS = "body {background:transparent}",
+                    EnableGPUAcceleration = true
+                });
+
+                
+                //var path = ;Path.Combine(Environment.CurrentDirectory, "GUI")
+                
+
                 WebCore.Run();
             }){IsBackground = true};
 
@@ -49,24 +58,37 @@ namespace OpenCAD.Awesomium
             {
                 LogPath = Environment.CurrentDirectory + "/awesomium.log",
                 LogLevel = LogLevel.Verbose,
+                AssetProtocol = "cad"
             });
+            
 
             _awesomiumReady.WaitOne();
 
             _awesomiumContext.Post(state =>
             {
-                webView = WebCore.CreateWebView(Width, Height, WebViewType.Offscreen);
+                webView = WebCore.CreateWebView(Size.Width, Size.Height, WebViewType.Offscreen);
+                webView.LoadingFrameFailed += webView_LoadingFrameFailed;
+
                 webView.IsTransparent = true;
                 webView.CreateSurface += (s, e) =>
                 {
-                    _surface = new BitmapSurface(Width, Height);
+                    _surface = new BitmapSurface(Size.Width, Size.Height);
                     e.Surface = _surface;
                 };
-                webView.Source = new Uri("http://www.google.co.uk/");
+                webView.WebSession.AddDataSource("gui", new DirectoryDataSource("GUI"));
+                webView.Source = new Uri("cad://gui/index.html");
+                webView.FocusView();
             }, null);
 
        
         }
+
+        void webView_LoadingFrameFailed(object sender, LoadingFrameFailedEventArgs e)
+        {
+            Console.WriteLine(e.ErrorCode);
+        }
+
+        public Size Size { get; private set; }
 
         public void Update()
         {
@@ -87,7 +109,6 @@ namespace OpenCAD.Awesomium
 
         public bool IsDirty { get; private set; }
 
-
         public byte[] Data
         {
             get
@@ -95,54 +116,57 @@ namespace OpenCAD.Awesomium
                 IsDirty = false;
                 return _data;
             }
-            private set { _data = value; }
         }
 
-        public void Resize(int width, int height)
+        public void Resize(Size size)
         {
-            
+            Console.WriteLine(size);
+            Size = size;
+            _data = new Byte[Size.Width * 4 * Size.Height];
+            _awesomiumContext.Send(state =>
+            {
+                webView.Resize(size.Width, size.Height);
+                
+                _surface.IsDirty = true;
+            }, null);
         }
 
+        public void MouseMove(Point point)
+        {
+            _awesomiumContext.Post(state => webView.InjectMouseMove(point.X,point.Y), null);
 
-        //public byte[] Render()
-        //{
-        //    if (_surface == null) return null;
+        }
 
-        //    //_awesomiumContext.Post(state =>
-        //    //{
-        //    //    if (_surface == null) return null;
-
-        //    //}, null);
-        //    //if (exit)
-        //    //{
-        //    //    data = null;
-        //    //    return false;
-        //    //}
-        //    Console.WriteLine("Dirty!");
-
-            
-        //    //_awesomiumContext.Send(state =>
-        //    //{
-        //    //    //if (_surface.IsDirty)
-        //    //    {
-        //    //        unsafe
-        //    //        {
-        //    //            // This part saves us from double copying everything.
-        //    //            fixed (Byte* imagePtr = (byte[])state)
-        //    //            {
-        //    //                _surface.CopyTo((IntPtr)imagePtr, _surface.Width * 4, 4, true, false);
-        //    //            }
-        //    //        }
-        //    //    }
-        //    //}, imageBytes);
-        //    //return imageBytes;
-        //}
-
+        public void MouseButton(MouseButton button, bool down)
+        {
+            _awesomiumContext.Send(state =>
+            {
+                if (down)
+                {
+                    webView.InjectMouseDown(button.ToAwesomiumButton());
+                }
+                else
+                {
+                    webView.InjectMouseUp(button.ToAwesomiumButton());
+                }
+            }, null);
+        }
 
         public void Dispose()
         {
 
             WebCore.Shutdown();
+        }
+    }
+
+    public class LocalDataSource : DataSource {
+        protected override void OnRequest(DataSourceRequest request)
+        {
+            var content = "<h1>Hello World</h1>";
+            var ptr = Marshal.StringToHGlobalUni(content);
+            SendResponse(request, new DataSourceResponse() { Buffer = ptr, MimeType = "text/html" , Size = (uint) content.Length});
+            Marshal.FreeHGlobal(ptr);
+
         }
     }
 }
