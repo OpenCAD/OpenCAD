@@ -26,5 +26,10 @@ namespace OpenCAD.Awesomium
                     return MouseButton.Left;
             }
         }
+
+        public static Uri CreateUri(this IViewModel vm)
+        {
+            return new Uri(String.Format("cad://gui/{0}.html", vm.ViewName));
+        }
     }
 }

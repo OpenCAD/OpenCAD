@@ -25,43 +25,6 @@ namespace OpenCAD.OpenGL
         public override void Dispose()
         {
 
-            //var vertices = new float[] { 0.75f, 0.75f, 0.0f };
-            //uint vbo;
-
-            //GL.GenBuffers(1, out vbo);
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            //GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(vertices.Length * sizeof(float)), vertices, BufferUsageHint.StaticDraw);
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            //         GL.BindTexture(TextureTarget.Texture2D, image);
-            //       GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(vertices.Length * sizeof(float)), vertices, BufferUsageHint.StaticDraw);
-
-            //int tex;
-            //GL.GenTextures(1,out tex);
-            //GL.BindTexture(TextureTarget.Texture2D, tex);
-
-
-            // Create and compile the vertex shader
-            //var vertexShader = GL.CreateShader(ShaderType.VertexShader);
-            //int length = 0;
-            //GL.ShaderSource(vertexShader,1,File.ReadAllLines("Shaders/test.vert"),ref length);
-            //GL.CompileShader(vertexShader);
-
-            //var geoShader = GL.CreateShader(ShaderType.GeometryShader);
-            //int length2 = 0;
-            //GL.ShaderSource(geoShader, 1, File.ReadAllLines("Shaders/test.geom"), ref length2);
-            //GL.CompileShader(geoShader);
-
-            //var shaderProgram = GL.CreateProgram();
-            //GL.AttachShader(shaderProgram, vertexShader);
-            //GL.AttachShader(shaderProgram, geoShader);
-
-            //GL.LinkProgram(shaderProgram);
-            //GL.UseProgram(shaderProgram);
-
-
-            //GL.DrawElements(BeginMode.Triangles, 1, DrawElementsType.UnsignedByte, IntPtr.Zero);
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            //GL.DrawArrays(BeginMode.Points, 0, 1);
         }
 
         public override void Run(Size size)
@@ -86,8 +49,10 @@ namespace OpenCAD.OpenGL
             GL.Enable(EnableCap.CullFace);
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            var back = new BackgroundRenderer(new GradientBackground(Color.YellowGreen, Color.Blue, Color.Plum, Color.Aquamarine));
+            //var back = new BackgroundRenderer(new GradientBackground(Color.YellowGreen, Color.Blue, Color.Plum, Color.Aquamarine));
+            var back = new BackgroundRenderer(new SolidBackground(Color.FromArgb()));
             var test = new TestRenderer();
 
             var vertexPositions = new[] { 0.75f, 0.75f, 0.0f, 1.0f, 0.75f, -0.75f, 0.0f, 1.0f, -0.75f, -0.75f, 0.0f, 1.0f, };

@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using Autofac;
 using Autofac.Core;
 using OpenCAD.Awesomium;
+using OpenCAD.Desktop.ViewModel;
 using OpenCAD.Kernel.Application;
 using OpenCAD.Kernel.Application.Messaging;
 using OpenCAD.Kernel.Application.Messaging.Messages;
@@ -62,9 +63,12 @@ namespace OpenCAD.Desktop
 
             builder.RegisterType<DesktopApplication>().As<IApplication>().SingleInstance();
             builder.RegisterType<MessageAggregator>().As<IMessageAggregator>().SingleInstance();
-            builder.RegisterType<AwesomiumGUI>().As<IGUI>().SingleInstance();
+            builder.RegisterType<AwesomiumGUI<ShellViewModel>>().As<IGUI>().SingleInstance();
             builder.RegisterType<OpenGLWindow>().As<IWindow>();
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
+
+            builder.RegisterType<ShellViewModel>().AsSelf();
+
 
             //builder.Register(c => new DocumentStore { ConnectionStringName = "RavenDB" }.Initialize()).As<IDocumentStore>().SingleInstance();
             //builder.Register(c => c.Resolve<IDocumentStore>().OpenAsyncSession()).As<IAsyncDocumentSession>().InstancePerHttpRequest();
@@ -74,4 +78,5 @@ namespace OpenCAD.Desktop
             //builder.RegisterType<UserManager<ApplicationUser>>().InstancePerHttpRequest();
         }
     }
+
 }

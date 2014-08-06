@@ -60,6 +60,7 @@ namespace OpenCAD.Kernel.Graphics.Window
     }
 
     
+
     public class WindowManager:BaseWindowManager
     {
         private readonly Func<IWindow> _windowBuilder;

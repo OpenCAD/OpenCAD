@@ -9,7 +9,6 @@ namespace OpenCAD.Kernel.Graphics.GUI
     public interface IGUI:IDisposable
     {
         Size Size { get; }
-        //byte[] Render();
         void Update();
         bool IsDirty { get; }
         byte[] Data { get; }
@@ -17,12 +16,20 @@ namespace OpenCAD.Kernel.Graphics.GUI
         void MouseMove(Point point);
         void MouseButton(MouseButton button, bool down);
 
-        // event NewImageEventHandler NewImageData;
+
     }
-    //public delegate void NewImageEventHandler(object sender, byte[] image);
+
+
+    public class GUIManager:IGUIManager
+    {
+        public IGUI Create()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public interface IGUIManager
     {
-        IWindow Create();
+        IGUI Create();
     }
 }

@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\IViewModel.cs" />
     <Compile Include="Application\Messaging\IHandle.cs" />
     <Compile Include="Application\Messaging\IMessageAggregator.cs" />
     <Compile Include="Application\IApplication.cs" />
