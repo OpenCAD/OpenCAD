@@ -7,17 +7,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>ShellView</title>
-
     <link href="cad://gui/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-  padding-top: 50px;
-            background: transparent;
-}
-.starter-template {
-  padding: 40px 15px;
-  text-align: center;
-}
+        padding-top: 50px;
+        background: transparent;
+        color: white
+        }
+        .starter-template {
+        padding: 40px 15px;
+        text-align: center;
+        }
     </style>
 </head>
 
@@ -45,15 +45,11 @@
     </div>
 
     <div class="container">
-
-        <div class="starter-template">
-            <h1>Bootstrap starter template</h1>
-            <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-        </div>
         The name is <span data-bind="text: Test"></span>
         <button data-bind="click: Bar">Click me</button>
     </div><!-- /.container -->
     <script src="cad://gui/js/knockout-3.1.0.js"></script>
+    <script src="cad://gui/js/knockout.mapping.js"></script>
     <script src="cad://gui/js/jquery-1.11.1.min.js"></script>
     <script src="cad://gui/js/bootstrap.min.js"></script>
 </body>

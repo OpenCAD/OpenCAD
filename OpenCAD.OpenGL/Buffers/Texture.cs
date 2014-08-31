@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenCAD.Kernel.Graphics.GUI;
 using Pencil.Gaming.Graphics;
 
@@ -14,6 +9,16 @@ namespace OpenCAD.OpenGL.Buffers
     {
         private readonly uint _handle;
         private TextureTarget _target = TextureTarget.Texture2D;
+
+        public Texture()
+        {
+            GL.GenTextures(1, out _handle);
+            using (new Bind(this))
+            {
+                GL.TexParameter(_target, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+                GL.TexParameter(_target, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            }
+        }
 
         public Texture(Bitmap bmp)
         {

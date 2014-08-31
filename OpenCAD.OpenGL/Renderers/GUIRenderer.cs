@@ -1,25 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using OpenCAD.Kernel;
-using OpenCAD.Kernel.Graphics.Backgrounds;
 using OpenCAD.OpenGL.Buffers;
 using Pencil.Gaming.Graphics;
 
 namespace OpenCAD.OpenGL.Renderers
 {
-    public class TestRenderer
+    public class GUIRenderer
     {
         private readonly VAO _vao;
         private readonly ShaderProgram _program;
         public Texture Texture;
-        public TestRenderer()
+        public GUIRenderer()
         {
-            using (var bmp = new Bitmap(@"C:\temp\test.jpg"))
-            {
-                Texture = new Texture(bmp);
-            }
-            _program = new ShaderProgram("Shaders/test.vert", "Shaders/test.frag");
+            Texture = new Texture();
+            _program = new ShaderProgram("Shaders/GUI.vert", "Shaders/GUI.frag");
             _vao = new VAO();
             var flatBuffer = new VBO();
             using (Bind.These(_vao, flatBuffer))
@@ -32,7 +25,6 @@ namespace OpenCAD.OpenGL.Renderers
                 GL.EnableVertexAttribArray(1);
                 GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, stride, new IntPtr(sizeof(float) * 2));
             }
-
         }
         public void Render()
         {

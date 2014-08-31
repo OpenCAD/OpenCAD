@@ -26,6 +26,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCAD.Awesomium", "OpenCA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCAD.OpenGL", "OpenCAD.OpenGL\OpenCAD.OpenGL.csproj", "{D377617B-E19F-49F4-AB9C-B6BC57815155}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCAD.OpenTK", "OpenCAD.OpenTK\OpenCAD.OpenTK.csproj", "{3356FF72-8562-4F5F-8528-2613AAC7D80C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCAD.Formats.STL", "OpenCAD.Formats.STL\OpenCAD.Formats.STL.csproj", "{5107EAD2-B13E-41B3-93C5-76D02589169D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +122,26 @@ Global
 		{D377617B-E19F-49F4-AB9C-B6BC57815155}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D377617B-E19F-49F4-AB9C-B6BC57815155}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D377617B-E19F-49F4-AB9C-B6BC57815155}.Release|x64.ActiveCfg = Release|Any CPU
+		{3356FF72-8562-4F5F-8528-2613AAC7D80C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3356FF72-8562-4F5F-8528-2613AAC7D80C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3356FF72-8562-4F5F-8528-2613AAC7D80C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3356FF72-8562-4F5F-8528-2613AAC7D80C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3356FF72-8562-4F5F-8528-2613AAC7D80C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3356FF72-8562-4F5F-8528-2613AAC7D80C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3356FF72-8562-4F5F-8528-2613AAC7D80C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3356FF72-8562-4F5F-8528-2613AAC7D80C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3356FF72-8562-4F5F-8528-2613AAC7D80C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3356FF72-8562-4F5F-8528-2613AAC7D80C}.Release|x64.ActiveCfg = Release|Any CPU
+		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -19,7 +19,7 @@ namespace OpenCAD.Kernel.Graphics
         public Mat4 Projection { get; set; }
         public Mat4 MVP
         {
-            get { return Projection; }
+            get { return Mat4.Scale(0.05); }
             //get { return Projection * View * Model; }
              //get { return Model * View * Projection; }
         }
@@ -52,7 +52,6 @@ namespace OpenCAD.Kernel.Graphics
         }
         public override void Resize(int width, int height)
         {
-            
             //Projection = Mat4.CreatePerspective(Math.PI / 4, width / (float)height, 1f, 2 * _dist);
             Projection = Mat4.CreatePerspective(Math.PI / 4, width / (float)height, 1f, 100.0f);
             //Projection = Mat4.CreateOrthographic(-width / 2.0, width / 2.0, -height / 2.0, height / 2.0, Near, Far) * Mat4.Scale(Scale);

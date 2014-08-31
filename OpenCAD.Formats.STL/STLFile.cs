@@ -3,32 +3,40 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using OpenCAD.Kernel.Geometry;
-using OpenCAD.Kernel.Maths;
 
-namespace OpenCAD.Kernel.FileFormats.STL
+namespace OpenCAD.Formats.STL
 {
-    public class STLReader : IFileReader<STLFile>
+    public class STLFile
     {
-        public STLFile Read(string path)
+        public IList<STLFacet> Facets { get; private set; }
+
+        public STLFile()
         {
-            //TODO need a better checking method
-            using(var stream = File.Open(path, FileMode.Open))
+            Facets = new List<STLFacet>();
+        }
+
+        public STLFile(string path)
+            : this(File.Open(path, FileMode.Open))
+        {
+
+        }
+
+        public STLFile(Stream stream)
+        {
+            using(stream)
             using (var sr = new StreamReader(stream))
             {
                 var line = sr.ReadLine();
                 if (line != null && Regex.Match(line, "^solid \\S+$").Success)
                 {
-                    return new STLFile(ReadASCII(stream).ToList());
+                    Facets = ReadASCII(stream).ToList();
                 }
-                return new STLFile(ReadBinary(stream).ToList());
+                Facets = ReadBinary(stream).ToList();
             }
         }
 
-        private IEnumerable<Triangle> ReadBinary(Stream stream)
+        private IEnumerable<STLFacet> ReadBinary(Stream stream)
         {
             stream.Position = 0;
             using (var br = new BinaryReader(stream))
@@ -37,21 +45,16 @@ namespace OpenCAD.Kernel.FileFormats.STL
                 var count = (int)br.ReadUInt32();
                 for (var i = 0; i < count; i++)
                 {
-                    var normal = new Vect3(br.ReadSingle(), br.ReadSingle(), br.ReadSingle());
-                    var p1 = new Vect3(br.ReadSingle(), br.ReadSingle(), br.ReadSingle());
-                    var p2 = new Vect3(br.ReadSingle(), br.ReadSingle(), br.ReadSingle());
-                    var p3 = new Vect3(br.ReadSingle(), br.ReadSingle(), br.ReadSingle());
-                    br.ReadUInt16(); //attrib
-                    yield return new Triangle(new Point(p1), new Point(p2), new Point(p3), normal);
+                    yield return new STLFacet(br);
                 }
             }
         }
 
-        private IEnumerable<Triangle> ReadASCII(Stream stream)
+        private IEnumerable<STLFacet> ReadASCII(Stream stream)
         {
             stream.Position = 0;
-            Vect3 normal = null;
-            var points = new Vect3[3];
+            var normal = new float[3];
+            var vertices = new float[3,3];
             int i = 0;
             const NumberStyles style = NumberStyles.AllowExponent | NumberStyles.AllowLeadingSign | NumberStyles.Number;
             using (var reader = new StreamReader(stream))
@@ -65,18 +68,21 @@ namespace OpenCAD.Kernel.FileFormats.STL
                         case "solid":
                             break;
                         case "facet":
-                            normal = new Vect3(Double.Parse(split[2], style), Double.Parse(split[3], style),
-                                               Double.Parse(split[4], style));
+                            normal[0] = float.Parse(split[2], style);
+                            normal[1] = float.Parse(split[3], style);
+                            normal[2] = float.Parse(split[4], style);
                             break;
                         case "outer":
                             break;
                         case "vertex":
-                            points[i++] = new Vect3(Double.Parse(split[1], style), Double.Parse(split[2], style), Double.Parse(split[3], style));
+                            vertices[i++,0] = float.Parse(split[1], style);
+                            vertices[i++,1] = float.Parse(split[2], style);
+                            vertices[i++,2] = float.Parse(split[3], style);
                             break;
                         case "endloop":
                             break;
                         case "endfacet":
-                            yield return new Triangle(new Point( points[0]), new Point( points[1]), new Point( points[2]), normal );
+                            yield return new STLFacet(normal, vertices);
                             i = 0;
                             break;
                         case "endsolid":
@@ -84,7 +90,21 @@ namespace OpenCAD.Kernel.FileFormats.STL
                     }
                 }
             }
+        }
 
+        public void Save()
+        {
+            
+        }
+
+        public void SaveToBinary()
+        {
+            
+        }
+
+        public void SaveToASCII()
+        {
+            
         }
     }
 }

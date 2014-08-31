@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using OpenCAD.Kernel.FileFormats;
-using OpenCAD.Kernel.FileFormats.STL;
+
+
 using OpenCAD.Kernel.Geometry;
 using OpenCAD.Kernel.Graphics;
 using OpenCAD.Kernel.Graphics.Backgrounds;
@@ -23,11 +23,11 @@ namespace OpenCAD.Test
     {
         public static void Main(string[] args)
         {
-            var f = new STLReader().Read(@"C:\Users\chris\Desktop\prt0001.stl");
-
+            //var f = new STLReader().Read(@"C:\Users\chris\Desktop\prt0001.stl");
+            Console.ReadLine();
             return;
             
-            var t = new AsciiPoints("bunny.ascii");
+            //var t = new AsciiPoints("bunny.ascii");
 
 
 
@@ -52,7 +52,7 @@ namespace OpenCAD.Test
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            var oct = t.ToOctree(10);
+            //var oct = t.ToOctree(10);
 
             stopWatch.Stop();
             Console.WriteLine(stopWatch.ElapsedMilliseconds);

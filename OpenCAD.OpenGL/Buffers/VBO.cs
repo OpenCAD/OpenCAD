@@ -38,19 +38,38 @@ namespace OpenCAD.OpenGL.Buffers
             Update(vertices.SelectMany(v => v.Data).ToArray());
         }
 
-
-        //public void Update<T>(IEnumerable<T> vertices)where T:IVertex
-        //{
-
-        //    var data = vertices.Select(v => v.Data).ToArray();
-
-        //    var pointer = GCHandle.Alloc(data, GCHandleType.Pinned).AddrOfPinnedObject();
-        //    _gl.BufferData(OpenGL.GL_ARRAY_BUFFER, Marshal.SizeOf(data), pointer, OpenGL.GL_STATIC_DRAW);
-        //}
-
         public void UnBind()
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
     }
+    //public class VBO<T> : IBindable 
+    //    where T : struct
+    //{
+
+    //    readonly uint _handle;
+
+    //    public VBO()
+    //    {
+    //        GL.GenBuffers(1, out _handle);
+    //    }
+
+    //    public void Bind()
+    //    {
+    //        GL.BindBuffer(BufferTarget.ArrayBuffer, _handle);
+    //    }
+
+    //    public void Buffer(IEnumerable<T> data)
+    //    {
+
+    //        var array = data.ToArray();
+    //        var pointer = GCHandle.Alloc(data, GCHandleType.Pinned).AddrOfPinnedObject();
+    //        GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(data.Length), pointer, BufferUsageHint.StaticDraw);
+    //    }
+
+    //    public void UnBind()
+    //    {
+    //        GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+    //    }
+    //}
 }

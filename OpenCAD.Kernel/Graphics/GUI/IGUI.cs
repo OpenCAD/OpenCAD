@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using OpenCAD.Kernel.Application;
-using OpenCAD.Kernel.Graphics.Window;
 
 namespace OpenCAD.Kernel.Graphics.GUI
 {
@@ -20,16 +20,37 @@ namespace OpenCAD.Kernel.Graphics.GUI
     }
 
 
-    public class GUIManager:IGUIManager
+    public abstract class BaseGUIManager:IGUIManager
     {
-        public IGUI Create()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Dispose();
+        //public abstract void Run();
+        public abstract IGUI Create(Size size, IViewModel viewModel);
+        public abstract IEnumerable<ILoadMessage> Load();
+
     }
 
-    public interface IGUIManager
+    public interface IGUIManager:ILoadable,IDisposable
     {
-        IGUI Create();
+        //void Run();
+        IGUI Create(Size size, IViewModel viewModel);
+    }
+
+    public interface ILoadable
+    {
+        IEnumerable<ILoadMessage> Load();
+    }
+
+    public interface ILoadMessage
+    {
+        string Message { get; }
+    }
+
+    public class LoadMessage : ILoadMessage
+    {
+        public string Message { get; private set; }
+        public LoadMessage(string message)
+        {
+            Message = message;
+        }
     }
 }

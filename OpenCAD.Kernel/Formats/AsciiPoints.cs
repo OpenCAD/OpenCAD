@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenCAD.Kernel.Geometry;
 using OpenCAD.Kernel.Maths;
 using OpenCAD.Kernel.Modelling;
 
-namespace OpenCAD.Kernel.FileFormats
+namespace OpenCAD.Kernel.Formats
 {
     public class AsciiPoints:PointCloud
     {

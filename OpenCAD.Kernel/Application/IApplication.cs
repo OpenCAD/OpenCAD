@@ -1,5 +1,7 @@
 ﻿using System;
-using OpenCAD.Kernel.Graphics.Window;
+using System.Drawing;
+using OpenCAD.Kernel.Application.Windowing;
+using OpenCAD.Kernel.Graphics.GUI;
 
 namespace OpenCAD.Kernel.Application
 {
@@ -14,24 +16,4 @@ namespace OpenCAD.Kernel.Application
         public abstract void Run();
     }
 
-    public class DesktopApplication:BaseApplication
-    {
-        private readonly IWindowManager _windowManager;
-
-        public DesktopApplication(IWindowManager windowManager)
-        {
-            _windowManager = windowManager;
-        }
-
-        public override void Run()
-        {
-            //this blocks...
-            _windowManager.Create();
-        }
-
-        public override void Dispose()
-        {
-            
-        }
-    }
 }

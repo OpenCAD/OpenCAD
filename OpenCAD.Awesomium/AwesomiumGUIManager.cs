@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -15,50 +16,46 @@ using MouseButton = OpenCAD.Kernel.Application.MouseButton;
 
 namespace OpenCAD.Awesomium
 {
-    public class AwesomiumGUI<THome> : IGUI where THome:IViewModel
+    public class AwesomiumGUIManager : BaseGUIManager
     {
-        private Thread _thread;
-        //public event NewImageEventHandler NewImageData;
-
-        private WebView webView;
-
-        private BitmapSurface _surface;
-        private SynchronizationContext _awesomiumContext;
+        private readonly Thread _coreThread;
         private readonly ManualResetEvent _awesomiumReady = new ManualResetEvent(false);
-        private byte[] _data;
-
-        private IViewModel _viewModel;
-
-        public AwesomiumGUI(Func<THome> homeBuilder)
+        private WebSession _session;
+        private SynchronizationContext _awesomiumContext;
+        private DataSource _dataSource;
+        public AwesomiumGUIManager()
         {
-            _viewModel = homeBuilder();
 
-            Size = new Size(100,100);
-            _data = new Byte[Size.Width * 4 * Size.Height];
-            _thread = new Thread(() =>
+            _dataSource = new DirectoryDataSource("GUI");
+
+            _coreThread = new Thread(() =>
             {
                 WebCore.Started += (s, e) =>
                 {
                     _awesomiumContext = SynchronizationContext.Current;
                     _awesomiumReady.Set();
                 };
-                
-                var session = WebCore.CreateWebSession(new WebPreferences
+                _session = WebCore.CreateWebSession(new WebPreferences
                 {
-                    //CustomCSS = "body {background:transparent}",
                     EnableGPUAcceleration = true,
                 });
-
-                //var path = ;Path.Combine(Environment.CurrentDirectory, "GUI")
-
                 WebCore.Run();
-            }){IsBackground = true};
-
-            _thread.Start();
+            }) { IsBackground = true };
 
 
-            
-            WebCore.Initialize(new WebConfig()
+        }
+
+
+        public override void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<ILoadMessage> Load()
+        {
+            yield return new LoadMessage("GUI Starting");
+            _coreThread.Start();
+            WebCore.Initialize(new WebConfig
             {
                 LogPath = Environment.CurrentDirectory + "/awesomium.log",
                 LogLevel = LogLevel.Verbose,
@@ -66,17 +63,38 @@ namespace OpenCAD.Awesomium
                 RemoteDebuggingHost = "192.168.1.201",
                 RemoteDebuggingPort = 8001,
             });
-            
-
             _awesomiumReady.WaitOne();
+            yield return new LoadMessage("GUI Started");
+        }
 
-            _awesomiumContext.Post(state =>
+
+        public override IGUI Create(Size size, IViewModel viewModel)
+        {
+
+            return new GUI(size, viewModel, _awesomiumContext, _dataSource);
+        }
+
+
+    }
+
+    class GUI:IGUI
+    {
+        private WebView webView;
+        private BitmapSurface _surface;
+        public Size Size { get; private set; }
+        private byte[] _data;
+        private IViewModel _viewModel;
+        public GUI(Size size, IViewModel viewModel, SynchronizationContext awesomiumContext, DataSource dataSource)
+        {
+            _viewModel = viewModel;
+            Size = size;
+            _data = new Byte[Size.Width * 4 * Size.Height];
+            awesomiumContext.Post(state =>
             {
                 webView = WebCore.CreateWebView(Size.Width, Size.Height, WebViewType.Offscreen);
 
                 webView.LoadingFrameFailed += webView_LoadingFrameFailed;
-                
-                webView.DocumentReady += (sender, args) => Bind(_viewModel);
+                webView.DocumentReady += WebViewOnDocumentReady;
 
                 webView.IsTransparent = true;
                 webView.CreateSurface += (s, e) =>
@@ -85,43 +103,20 @@ namespace OpenCAD.Awesomium
                     e.Surface = _surface;
                 };
 
-                webView.WebSession.AddDataSource("gui", new DirectoryDataSource("GUI"));
-
-                Load(_viewModel);
-            }, null);
-
-       
-        }
-
-        void Load(IViewModel model)
-        {
-
-
-            model.PropertyChanged += (sender, args) =>
-            {
-                
-            };
-            _awesomiumContext.Post(state =>
-            {
-                webView.Source = model.CreateUri();
+                webView.WebSession.AddDataSource("gui", dataSource);
+                webView.Source = viewModel.CreateUri();
                 webView.FocusView();
             }, null);
         }
 
-
-        void Bind(IViewModel viewModel)
+        private void WebViewOnDocumentReady(object s, UrlEventArgs urlEventArgs)
         {
-            if (!webView.IsLive)
-                return;
-            //webView.ExecuteJavascript(File.ReadAllText("GUI/js/knockout-3.1.0.js"));
-            //webView.ExecuteJavascript(File.ReadAllText("GUI/js/jquery-1.11.1.min.js"));
-            //webView.ExecuteJavascript(File.ReadAllText("GUI/js/bootstrap.min.js")); 
-            var sb = new StringBuilder();
             webView.ExecuteJavascript("var VM = {}");
             JSObject remote = webView.ExecuteJavascriptWithResult("VM");
-            foreach (var propertyInfo in viewModel.GetType().GetProperties())
+            var sb = new StringBuilder();
+            foreach (var propertyInfo in _viewModel.GetType().GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(BindAttribute))))
             {
-                var value = propertyInfo.GetValue(viewModel);
+                var value = propertyInfo.GetValue(_viewModel);
                 if (value is IList)
                 {
                     sb.AppendLine(String.Format("VM.{0} = ko.observableArray({1});", propertyInfo.Name, JsonConvert.SerializeObject(value)));
@@ -130,9 +125,9 @@ namespace OpenCAD.Awesomium
                 {
                     sb.AppendLine(String.Format("VM.{0} = ko.observable({1});", propertyInfo.Name, JsonConvert.SerializeObject(value)));
                 }
-
             }
-            foreach (var methodInfo in viewModel.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public).Where(m => !m.IsSpecialName))
+
+            foreach (var methodInfo in _viewModel.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public).Where(m => !m.IsSpecialName).Where(m => Attribute.IsDefined(m, typeof(BindAttribute))))
             {
                 var info = methodInfo;
                 remote.Bind(methodInfo.Name, true, (sender, args) =>
@@ -142,14 +137,14 @@ namespace OpenCAD.Awesomium
                         var p = info.GetParameters();
                         if (p.Length == 0)
                         {
-                            var ret = info.Invoke(viewModel, new Object[0]);
+                            var ret = info.Invoke(_viewModel, new Object[0]);
                             args.Result = new JSValue(Map(ret));
                         }
                         else
                         {
                             if (p.Length != args.Arguments.Length) throw new TargetParameterCountException();
                             var arguments = p.Zip(args.Arguments, (parameterInfo, value) => Cast(value));
-                            var ret = info.Invoke(viewModel, arguments.ToArray());
+                            var ret = info.Invoke(_viewModel, arguments.ToArray());
                             args.Result = new JSValue(Map(ret));
                         }
                     }
@@ -159,19 +154,37 @@ namespace OpenCAD.Awesomium
                     }
                 });
             }
+
+
             sb.AppendLine("ko.applyBindings(VM);");
             webView.ExecuteJavascript(sb.ToString());
-            viewModel.PropertyChanged += (sender, args) => webView.Invoke(new Action(() =>
+            _viewModel.PropertyChanged += (sender, args) => webView.Invoke(new Action(() =>
             {
-                //if (webView.IsLive) return;
                 var value = sender.GetType().GetProperty(args.PropertyName).GetValue(sender);
-                //webView.ExecuteJavascript(String.Format("VM.{0}({1});", args.PropertyName, value));
-                var t = JsonConvert.SerializeObject(new KeyValuePair<string, object>(args.PropertyName, value));
-                webView.ExecuteJavascript(String.Format("ko.mapping.fromJS({0}, VM);", JsonConvert.SerializeObject(new KeyValuePair<string, object>(args.PropertyName, value))));
+                webView.ExecuteJavascript(String.Format("VM.{0}({1});", args.PropertyName, value));
+                //webView.ExecuteJavascript(String.Format("ko.mapping.fromJS({0}, VM);", CreateJSON(args.PropertyName, value)));
+
+
 
 
             }), null);
 
+        }
+
+        private string CreateJSON(string key, object value)
+        {
+            var sb = new StringBuilder();
+            var sw = new StringWriter(sb);
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                writer.Formatting = Formatting.Indented;
+
+                writer.WriteStartObject();
+                writer.WritePropertyName(key);
+                writer.WriteValue(value);
+                writer.WriteEndObject();
+            }
+            return sb.ToString();
         }
 
         private object Cast(JSValue value)
@@ -194,20 +207,20 @@ namespace OpenCAD.Awesomium
             return JSValue.Undefined;
         }
 
-        private T Cast<T>(object input)
+        private void webView_LoadingFrameFailed(object sender, LoadingFrameFailedEventArgs e)
         {
-            return ((T)input);
-        }
-        void webView_LoadingFrameFailed(object sender, LoadingFrameFailedEventArgs e)
-        {
-            Console.WriteLine(e.ErrorCode);
+            
         }
 
-        public Size Size { get; private set; }
+        public void Dispose()
+        {
+
+        }
+
 
         public void Update()
         {
-            _awesomiumContext.Post(state =>
+            webView.Invoke(new Action(() =>
             {
                 if (_surface == null || !_surface.IsDirty) return;
                 unsafe
@@ -219,7 +232,8 @@ namespace OpenCAD.Awesomium
                     }
                 }
                 IsDirty = true;
-            }, null);
+
+            }), null);
         }
 
         public bool IsDirty { get; private set; }
@@ -235,27 +249,24 @@ namespace OpenCAD.Awesomium
 
         public void Resize(Size size)
         {
-            Console.WriteLine(size);
             Size = size;
             _data = new Byte[Size.Width * 4 * Size.Height];
-            _awesomiumContext.Send(state =>
+            webView.Invoke(new Action(() =>
             {
                 webView.Resize(size.Width, size.Height);
-                
+
                 _surface.IsDirty = true;
-            }, null);
+            }), null);
         }
 
         public void MouseMove(Point point)
         {
-            _awesomiumContext.Post(state => webView.InjectMouseMove(point.X,point.Y), null);
-
+            webView.Invoke(new Action(() => webView.InjectMouseMove(point.X, point.Y)), null);
         }
 
         public void MouseButton(MouseButton button, bool down)
         {
-    
-            _awesomiumContext.Send(state =>
+            webView.Invoke(new Action(() =>
             {
                 if (down)
                 {
@@ -265,13 +276,7 @@ namespace OpenCAD.Awesomium
                 {
                     webView.InjectMouseUp(button.ToAwesomiumButton());
                 }
-            }, null);
-        }
-
-        public void Dispose()
-        {
-
-            WebCore.Shutdown();
+            }), null);
         }
     }
 }

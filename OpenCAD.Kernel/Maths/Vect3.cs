@@ -49,6 +49,18 @@ namespace OpenCAD.Kernel.Maths
         }
 
         /// <summary>
+        /// Create new Vect3 from list of floats
+        /// </summary>
+        /// <param name="a"></param>
+        public Vect3(IList<float> a)
+        {
+            if (a.Count != 3) throw new ArgumentException("Array should be double[3]");
+            X = a[0];
+            Y = a[1];
+            Z = a[2];
+        }
+
+        /// <summary>
         /// Calculate the length
         /// </summary>
         public double Length

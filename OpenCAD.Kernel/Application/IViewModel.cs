@@ -9,6 +9,11 @@ namespace OpenCAD.Kernel.Application
         string ViewName { get; }
     }
 
+    public interface IView
+    {
+
+    }
+
     public abstract class BaseViewModel : IViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -24,5 +29,4 @@ namespace OpenCAD.Kernel.Application
 
         public string ViewName { get { return GetType().Name.Replace("ViewModel", "View"); } }
     }
-
 }

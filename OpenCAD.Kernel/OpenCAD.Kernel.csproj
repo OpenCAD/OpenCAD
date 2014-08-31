@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -58,16 +62,15 @@
     <Compile Include="Application\Messaging\IHandle.cs" />
     <Compile Include="Application\Messaging\IMessageAggregator.cs" />
     <Compile Include="Application\IApplication.cs" />
+    <Compile Include="Application\Messaging\Messages\ModelMessages.cs" />
     <Compile Include="Application\Messaging\Messages\WindowMessages.cs" />
     <Compile Include="Application\MouseButton.cs" />
+    <Compile Include="Application\Scene.cs" />
+    <Compile Include="Application\ShellViewModel.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="FileFormats\AsciiPoints.cs" />
-    <Compile Include="FileFormats\IFileFormat.cs" />
-    <Compile Include="FileFormats\IFileReader.cs" />
-    <Compile Include="FileFormats\PCLFile.cs" />
-    <Compile Include="FileFormats\STL\STLFile.cs" />
-    <Compile Include="FileFormats\STL\STLReader.cs" />
-    <Compile Include="FileFormats\STL\STLWriter.cs" />
+    <Compile Include="Formats\AsciiPoints.cs" />
+    <Compile Include="Formats\Extensions.cs" />
+    <Compile Include="Formats\PCLFile.cs" />
     <Compile Include="Geometry\AABB.cs" />
     <Compile Include="Geometry\Arc.cs" />
     <Compile Include="Geometry\IAABB.cs" />
@@ -89,7 +92,8 @@
     <Compile Include="Graphics\IRenderer.cs" />
     <Compile Include="Graphics\IStaticScene.cs" />
     <Compile Include="Graphics\StaticScene.cs" />
-    <Compile Include="Graphics\Window\IWindow.cs" />
+    <Compile Include="Application\Windowing\IWindow.cs" />
+    <Compile Include="Application\Windowing\WindowManager.cs" />
     <Compile Include="Intersections\AABBIntersections.cs" />
     <Compile Include="Intersections\IntersectionExtensions.cs" />
     <Compile Include="Intersections\PointIntersections.cs" />
@@ -112,6 +116,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modelling\NewFolder1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenCAD.Formats.STL\OpenCAD.Formats.STL.csproj">
+      <Project>{5107EAD2-B13E-41B3-93C5-76D02589169D}</Project>
+      <Name>OpenCAD.Formats.STL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

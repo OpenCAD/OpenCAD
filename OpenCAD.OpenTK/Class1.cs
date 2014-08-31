@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenCAD.Kernel.FileFormats.STL
+namespace OpenCAD.OpenTK
 {
-    public class STLWriter
+    public class Class1
     {
+
     }
 }
