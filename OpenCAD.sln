@@ -30,6 +30,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCAD.OpenTK", "OpenCAD.O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCAD.Formats.STL", "OpenCAD.Formats.STL\OpenCAD.Formats.STL.csproj", "{5107EAD2-B13E-41B3-93C5-76D02589169D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Formats", "Formats", "{B38EC983-DF91-419D-8999-CC484851B4DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCAD.Formats.DXF", "OpenCAD.Formats.DXF\OpenCAD.Formats.DXF.csproj", "{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,8 +146,22 @@ Global
 		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5107EAD2-B13E-41B3-93C5-76D02589169D}.Release|x64.ActiveCfg = Release|Any CPU
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5107EAD2-B13E-41B3-93C5-76D02589169D} = {B38EC983-DF91-419D-8999-CC484851B4DE}
+		{2BB8826A-67A5-43D0-BAB5-E7C594BFA027} = {B38EC983-DF91-419D-8999-CC484851B4DE}
 	EndGlobalSection
 EndGlobal

@@ -21,28 +21,11 @@ namespace OpenCAD.Desktop
             _windowManager = windowManager;
         }
 
-        private IEnumerable<ILoadMessage> Load()
-        {
-            foreach (var loadMessage in _guiManager.Load())
-            {
-                yield return loadMessage;
-            }
-            foreach (var loadMessage in _windowManager.Load())
-            {
-                yield return loadMessage;
-            }
-        } 
-
         public override void Run()
         {
-            foreach (var message in Load())
-            {
-                Console.WriteLine(message.Message);
-            }
-
+            Worker.Run(Console.WriteLine, _guiManager.Load(), _windowManager.Load());
             var window = _windowManager.Create(new Size(800, 600), new ShellViewModel());
         }
-
 
         public override void Dispose()
         {

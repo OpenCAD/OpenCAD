@@ -6,8 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
-
+using OpenCAD.Formats.DXF;
 using OpenCAD.Kernel.Geometry;
 using OpenCAD.Kernel.Graphics;
 using OpenCAD.Kernel.Graphics.Backgrounds;
@@ -23,6 +22,15 @@ namespace OpenCAD.Test
     {
         public static void Main(string[] args)
         {
+
+
+            //test.dxf
+   
+            //var dxf = new DXFFile(@"C:\temp\test.dxf");
+     
+            
+
+
             //var f = new STLReader().Read(@"C:\Users\chris\Desktop\prt0001.stl");
             Console.ReadLine();
             return;

@@ -82,7 +82,7 @@ namespace OpenCAD.OpenGL
                 _gui.Update();
                 if (_gui.IsDirty)
                 {
-                    Console.WriteLine("Dirty");
+                    //Console.WriteLine("Dirty");
                     gui.Texture.Update(_gui);
                 }
                 // Set OpenGL clear colour to red

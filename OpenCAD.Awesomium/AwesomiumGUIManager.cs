@@ -51,20 +51,21 @@ namespace OpenCAD.Awesomium
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<ILoadMessage> Load()
+        public override IEnumerable<IResult> Load()
         {
-            yield return new LoadMessage("GUI Starting");
-            _coreThread.Start();
-            WebCore.Initialize(new WebConfig
-            {
-                LogPath = Environment.CurrentDirectory + "/awesomium.log",
-                LogLevel = LogLevel.Verbose,
-                AssetProtocol = "cad",
-                RemoteDebuggingHost = "192.168.1.201",
-                RemoteDebuggingPort = 8001,
+            yield return new Work("GUI Starting", () =>{
+                _coreThread.Start();
+                WebCore.Initialize(new WebConfig
+                {
+                    LogPath = Environment.CurrentDirectory + "/awesomium.log",
+                    LogLevel = LogLevel.Verbose,
+                    AssetProtocol = "cad",
+                    RemoteDebuggingHost = "192.168.1.201",
+                    RemoteDebuggingPort = 8001,
+                });
             });
             _awesomiumReady.WaitOne();
-            yield return new LoadMessage("GUI Started");
+            yield return new WorkMessage("GUI Started");
         }
 
 

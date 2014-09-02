@@ -1,0 +1,38 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ Assembly Name="System.Core, Version=4.0.0.0, Culture=neutral" #>
+<#@ Assembly Name="Microsoft.CSharp, Version=4.0.0.0, Culture=neutral" #>
+<#@ assembly name="EnvDTE" #>
+<#@ assembly name="$(SolutionDir)\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="$(TargetPath)" #>
+<#@ import namespace="OpenCAD.Formats.DXF" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+
+namespace OpenCAD.Formats.DXF.Sections
+{
+    public partial class HeaderSection {
+	<#
+var contents = File.ReadAllText(this.Host.ResolvePath("Header.json"));
+dynamic file = JsonConvert.DeserializeObject(contents);
+foreach (var content in file.Content){
+	#>
+/// <summary>
+    /// <#= ((string)content.Description).Replace("\r\n","\r\n    /// ")#>
+    /// </summary>
+	[DXFObject("<#= content.Variable#>", <#= String.Join(",",content.Group)#>)]
+	public <#= Helper.TypeStringFromJArray(content.Group) #> <#= ((string)content.Variable).Replace("$","")#> {get; private set;}
+	<#
+}
+#>
+	}
+}
+
+

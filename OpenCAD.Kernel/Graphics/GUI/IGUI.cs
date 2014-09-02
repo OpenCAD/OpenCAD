@@ -25,7 +25,7 @@ namespace OpenCAD.Kernel.Graphics.GUI
         public abstract void Dispose();
         //public abstract void Run();
         public abstract IGUI Create(Size size, IViewModel viewModel);
-        public abstract IEnumerable<ILoadMessage> Load();
+        public abstract IEnumerable<IResult> Load();
 
     }
 
@@ -37,20 +37,20 @@ namespace OpenCAD.Kernel.Graphics.GUI
 
     public interface ILoadable
     {
-        IEnumerable<ILoadMessage> Load();
+        IEnumerable<IResult> Load();
     }
 
-    public interface ILoadMessage
-    {
-        string Message { get; }
-    }
+    //public interface ILoadMessage
+    //{
+    //    string Message { get; }
+    //}
 
-    public class LoadMessage : ILoadMessage
-    {
-        public string Message { get; private set; }
-        public LoadMessage(string message)
-        {
-            Message = message;
-        }
-    }
+    //public class LoadMessage : ILoadMessage
+    //{
+    //    public string Message { get; private set; }
+    //    public LoadMessage(string message)
+    //    {
+    //        Message = message;
+    //    }
+    //}
 }

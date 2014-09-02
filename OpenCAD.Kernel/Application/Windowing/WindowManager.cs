@@ -38,9 +38,9 @@ namespace OpenCAD.Kernel.Application.Windowing
             return window;
         }
 
-        public IEnumerable<ILoadMessage> Load()
+        public IEnumerable<IResult> Load()
         {
-            yield return new LoadMessage("Windowing Loaded");
+            yield return new WorkMessage("Windowing Loaded");
         }
 
         public void Handle(ResizeRequestMessage message)
