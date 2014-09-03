@@ -47,6 +47,11 @@
   <ItemGroup>
     <Compile Include="DXFFile.cs" />
     <Compile Include="DXFTaggedData.cs" />
+    <Compile Include="GroupCodes.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GroupCodes.tt</DependentUpon>
+    </Compile>
     <Compile Include="Helper.cs" />
     <Compile Include="IDXFTaggedData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,11 +78,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="GroupCodes.json" />
     <None Include="packages.config" />
     <None Include="Sections\Header.json" />
     <None Include="Sections\HeaderSectionTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>HeaderSectionTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="GroupCodes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>GroupCodes.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

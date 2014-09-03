@@ -32,6 +32,7 @@ namespace OpenCAD.Formats.DXF
             if (Int32Codes.Contains(code)) return typeof(Int32);
             if (Int64Codes.Contains(code)) return typeof(Int64);
 
+
             return typeof(IntPtr);
         }
 
